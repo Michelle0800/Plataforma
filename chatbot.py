@@ -496,7 +496,7 @@ class UiService:
         ">
             <div style="font-size: 3rem; color: #4CAF50;">✓</div>
             <h3 style="color: #4CAF50; margin-bottom: 5px;">Chamada atendida!</h3>
-            <p style="font-size: 0.9rem; margin:0;">Paloma está te esperando...</p>
+            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -705,7 +705,7 @@ class UiService:
             st.markdown("""
             <div class="sidebar-header">
                 <img src="{profile_img}" alt="Paloma">
-                <h3 style="color: #ff66b3; margin-top: 10px;">Paloma Premium</h3>
+                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Premium</h3>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
@@ -964,7 +964,7 @@ class NewPages:
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Paloma Premium</h1>
+            <h1 style="color: #ff66b3;">Michelle Premium</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             <div style="margin-top: 20px;">
                 <a href="#vip" style="
@@ -1124,7 +1124,7 @@ class NewPages:
                 <li>Fotos Buceta</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_start}" target="_blank" rel="noopener noreferrer" style="
+                <a href="{checkout_Santinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff66b3, #ff1493);
                     color: white;
@@ -1141,7 +1141,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_start=Config.CHECKOUT_START), unsafe_allow_html=True)
+        """.format(checkout_start=Config.CHECKOUT_Santinha), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-premium">
@@ -1161,7 +1161,7 @@ class NewPages:
                 <li>Videos Masturbando</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_premium}" target="_blank" rel="noopener noreferrer" style="
+                <a href="{checkout_Danadinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #9400d3, #ff1493);
                     color: white;
@@ -1178,7 +1178,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_premium=Config.CHECKOUT_PREMIUM), unsafe_allow_html=True)
+        """.format(checkout_premium=Config.CHECKOUT_Danadinha), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-extreme">
@@ -1360,7 +1360,7 @@ class ChatService:
         formatted = []
         
         for msg in messages[-max_messages:]:
-            role = "Cliente" if msg["role"] == "user" else "Paloma"
+            role = "Cliente" if msg["role"] == "user" else "Michelle"
             content = msg["content"]
             if content == "[ÁUDIO]":
                 content = "[Enviou um áudio sensual]"
