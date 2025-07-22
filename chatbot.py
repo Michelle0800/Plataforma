@@ -79,7 +79,7 @@ class Config:
     CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
     CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
     CHECKOUT_SAFADINHA = "https://pay.risepay.com.br/Pay/34c9d16d06564192ab9bfef998088f01"
-    CHECKOUT_DIABINHA+SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
+    CHECKOUT_DIABINHA_SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
     AUDIO_FILE = "https://github.com/Michelle0800/Plataforma/raw/refs/heads/main/assets/assets_audio_paloma_audio.mp3"
