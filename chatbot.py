@@ -18,7 +18,7 @@ from functools import lru_cache
 # CONFIGURAÇÃO INICIAL DO STREAMLIT
 # ======================
 st.set_page_config(
-    page_title="Michelle Premium",
+    page_title="Paloma Premium",
     page_icon="💋",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -74,26 +74,29 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # CONSTANTES E CONFIGURAÇÕES
 # ======================
 class Config:
-    API_KEY = "AIzaSyBCRv6cub7dVuS5SwHttp2cfHQHfrpULHY"
+    API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
-    CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
-    CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
-    CHECKOUT_SAFADINHA = "https://pay.risepay.com.br/Pay/34c9d16d06564192ab9bfef998088f01"
-    CHECKOUT_DIABINHA_SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
+    VIP_LINK = "https://exemplo.com/vip"
+    CHECKOUT_START = "https://checkout.exemplo.com/start"
+    CHECKOUT_PREMIUM = "https://checkout.exemplo.com/premium"
+    CHECKOUT_EXTREME = "https://checkout.exemplo.com/extreme"
+    CHECKOUT_VIP_1MES = "https://checkout.exemplo.com/vip-1mes"
+    CHECKOUT_VIP_3MESES = "https://checkout.exemplo.com/vip-3meses"
+    CHECKOUT_VIP_1ANO = "https://checkout.exemplo.com/vip-1ano"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
-    AUDIO_FILE = "https://github.com/Michelle0800/Plataforma/raw/refs/heads/main/assets/assets_audio_paloma_audio.mp3"
+    AUDIO_FILE = "https://github.com/gustapb77/ChatBotHot/raw/refs/heads/main/assets/audio/paloma_audio.mp3"
     AUDIO_DURATION = 7
-    IMG_PROFILE = "https://i.ibb.co/602BSXNB/IMG-20241114-114311-521.jpg"
+    IMG_PROFILE = "https://i.ibb.co/ks5CNrDn/IMG-9256.jpg"
     IMG_GALLERY = [
-        "https://i.ibb.co/rGZYzWFq/FOTO.jpg",
-        "https://i.ibb.co/3ywqK8Sp/3076512347-jpg-1735240788632.jpg",
-        "https://i.ibb.co/0yCthpzf/2537946408-2024-12-22-10-03-06.jpg"
+        "https://i.ibb.co/zhNZL4FF/IMG-9198.jpg",
+        "https://i.ibb.co/Y4B7CbXf/IMG-9202.jpg",
+        "https://i.ibb.co/Fqf0gPPq/IMG-9199.jpg"
     ]
     IMG_HOME_PREVIEWS = [
-        "https://i.ibb.co/WNmf5LB9/FOTO.jpg",
-        "https://i.ibb.co/3yTRfgQt/In-Shot-20241207-113653997.jpg",
-        "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
+        "https://i.ibb.co/k2MJg4XC/Save-ClipApp-412457343-378531441368078-7870326395110089440-n.jpg",
+        "https://i.ibb.co/MxqKBk1X/Save-ClipApp-481825770-18486618637042608-2702272791254832108-n.jpg",
+        "https://i.ibb.co/F4CkkYTL/Save-ClipApp-461241348-1219420546053727-2357827070610318448-n.jpg"
     ]
     LOGO_URL = "https://i.ibb.co/LX7x3tcB/Logo-Golden-Pepper-Letreiro-1.png"
 
@@ -164,7 +167,7 @@ def save_persistent_data():
         'age_verified', 'messages', 'request_count',
         'connection_complete', 'chat_started', 'audio_sent',
         'current_page', 'show_vip_offer', 'session_id',
-        'last_cta_time'
+        'last_cta_time'  # Novo campo adicionado
     ]
     
     new_data = {key: st.session_state.get(key) for key in persistent_keys if key in st.session_state}
@@ -177,8 +180,8 @@ def save_persistent_data():
 # MODELOS DE DADOS
 # ======================
 class Persona:
-    Michelle = """
-    [PERFIL Michelle]
+    PALOMA = """
+    [PERFIL PALOMA]
     - Mulher vulgar e safada que adora provocar
     - Linguagem direta e cheia de malícia
     - Frases curtas e sem pontuação perfeita
@@ -193,7 +196,7 @@ class Persona:
     1. Quando o histórico mostra clima sexual:
     Histórico:
     Cliente: sua buceta é rosinha?
-    Michelle: adoro mostrar ela aberta
+    Paloma: adoro mostrar ela aberta
     Cliente: quero ver
     Resposta: ```json
     {
@@ -223,7 +226,7 @@ class Persona:
     3. Quando o contexto não justifica CTA:
     Histórico:
     Cliente: oi
-    Michelle: oi gato
+    Paloma: oi gato
     Resposta: ```json
     {
       "text": "eai gostoso",
@@ -231,8 +234,8 @@ class Persona:
         "show": false
       }
     }
+    ```
     """
-    # Removido o fechamento extra de docstring que causava o erro
 
 class CTAEngine:
     @staticmethod
@@ -391,7 +394,8 @@ class ApiService:
             "contents": [
                 {
                     "role": "user",
-                    "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]}
+                    "parts": [{"text": f"{Persona.PALOMA}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
+                }
             ],
             "generationConfig": {
                 "temperature": 0.9,
@@ -465,7 +469,7 @@ class UiService:
             animation: pulse-ring 2s infinite;
         ">
             <div style="font-size: 3rem;">📱</div>
-            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>
+            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Paloma...</h3>
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px;">
                 <div style="width: 10px; height: 10px; background: #4CAF50; border-radius: 50%;"></div>
                 <span style="font-size: 0.9rem;">Online agora</span>
@@ -495,7 +499,7 @@ class UiService:
         ">
             <div style="font-size: 3rem; color: #4CAF50;">✓</div>
             <h3 style="color: #4CAF50; margin-bottom: 5px;">Chamada atendida!</h3>
-            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>
+            <p style="font-size: 0.9rem; margin:0;">Paloma está te esperando...</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -703,8 +707,8 @@ class UiService:
             
             st.markdown("""
             <div class="sidebar-header">
-                <img src="{profile_img}" alt="Michelle">
-                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Premium</h3>
+                <img src="{profile_img}" alt="Paloma">
+                <h3 style="color: #ff66b3; margin-top: 10px;">Paloma Premium</h3>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
@@ -758,7 +762,7 @@ class UiService:
             st.markdown("---")
             st.markdown("""
             <div style="text-align: center; font-size: 0.7em; color: #888;">
-                <p>© 2024 Michelle Premium</p>
+                <p>© 2024 Paloma Premium</p>
                 <p>Conteúdo para maiores de 18 anos</p>
             </div>
             """, unsafe_allow_html=True)
@@ -899,7 +903,7 @@ class UiService:
         
         st.markdown(f"""
         <div class="chat-header">
-            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>
+            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Paloma</h2>
         </div>
         """, unsafe_allow_html=True)
         
@@ -963,7 +967,7 @@ class NewPages:
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Michelle Premium</h1>
+            <h1 style="color: #ff66b3;">Paloma Premium</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             <div style="margin-top: 20px;">
                 <a href="#vip" style="
@@ -1140,7 +1144,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_start=Config.CHECKOUT_SANTINHA), unsafe_allow_html=True)
+        """.format(checkout_start=Config.CHECKOUT_START), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-premium">
@@ -1177,7 +1181,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_premium=Config.CHECKOUT_DANADINHA), unsafe_allow_html=True)
+        """.format(checkout_premium=Config.CHECKOUT_PREMIUM), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-extreme">
@@ -1215,7 +1219,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_extreme=Config.CHECKOUT_SAFADINHA), unsafe_allow_html=True)
+        """.format(checkout_extreme=Config.CHECKOUT_EXTREME), unsafe_allow_html=True)
 
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1260,7 +1264,7 @@ class NewPages:
                 "original": "R$ 49,90",
                 "benefits": ["Acesso total", "Conteúdo novo diário", "Chat privado"],
                 "tag": "COMUM",
-                "link": Config.CHECKOUT_DIABINHA_SECRETO + "?plan=1mes"
+                "link": Config.CHECKOUT_VIP_1MES + "?plan=1mes"
             },
             {
                 "name": "3 Meses",
@@ -1268,7 +1272,7 @@ class NewPages:
                 "original": "R$ 149,70",
                 "benefits": ["25% de desconto", "Bônus: 1 vídeo exclusivo", "Prioridade no chat"],
                 "tag": "MAIS POPULAR",
-                "link": Config.CHECKOUT_DIABINHA_SECRETO + "?plan=3meses"
+                "link": Config.CHECKOUT_VIP_3MESES + "?plan=3meses"
             },
             {
                 "name": "1 Ano",
@@ -1276,7 +1280,7 @@ class NewPages:
                 "original": "R$ 598,80",
                 "benefits": ["66% de desconto", "Presente surpresa mensal", "Acesso a conteúdos raros"],
                 "tag": "MELHOR CUSTO-BENEFÍCIO",
-                "link": Config.CHECKOUT_DIABINHA_SECRETO + "?plan=1ano"
+                "link": Config.CHECKOUT_VIP_1ANO + "?plan=1ano"
             }
         ]
 
@@ -1347,7 +1351,7 @@ class ChatService:
             'audio_sent': False,
             'current_page': 'home',
             'show_vip_offer': False,
-            'last_cta_time': 0
+            'last_cta_time': 0  # Novo campo adicionado
         }
         
         for key, default in defaults.items():
@@ -1359,7 +1363,7 @@ class ChatService:
         formatted = []
         
         for msg in messages[-max_messages:]:
-            role = "Cliente" if msg["role"] == "user" else "Michelle"
+            role = "Cliente" if msg["role"] == "user" else "Paloma"
             content = msg["content"]
             if content == "[ÁUDIO]":
                 content = "[Enviou um áudio sensual]"
@@ -1414,7 +1418,7 @@ class ChatService:
                                 if content_data.get("cta", {}).get("show") and idx == len(st.session_state.messages[-12:]) - 1:
                                     if st.button(
                                         content_data.get("cta", {}).get("label", "Ver Ofertas"),
-                                        key=f"cta_button_{hash(msg['content'])}",
+                                        key=f"cta_button_{hash(msg['content'])}",  # Chave única baseada no conteúdo
                                         use_container_width=True
                                     ):
                                         st.session_state.current_page = content_data.get("cta", {}).get("target", "offers")
@@ -1638,7 +1642,7 @@ def main():
             st.markdown("""
             <div style="text-align: center; margin: 50px 0;">
                 <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
-                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
+                <h2 style="color: #ff66b3; margin-top: 15px;">Paloma</h2>
                 <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
