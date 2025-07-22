@@ -18,7 +18,7 @@ from functools import lru_cache
 # CONFIGURAÇÃO INICIAL DO STREAMLIT
 # ======================
 st.set_page_config(
-    page_title="Paloma Premium",
+    page_title="Michelle Premium",
     page_icon="💋",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -76,27 +76,24 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 class Config:
     API_KEY = "AIzaSyBCRv6cub7dVuS5SwHttp2cfHQHfrpULHY"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
-    VIP_LINK = "https://exemplo.com/vip"
-    CHECKOUT_START = "https://checkout.exemplo.com/start"
-    CHECKOUT_PREMIUM = "https://checkout.exemplo.com/premium"
-    CHECKOUT_EXTREME = "https://checkout.exemplo.com/extreme"
-    CHECKOUT_VIP_1MES = "https://checkout.exemplo.com/vip-1mes"
-    CHECKOUT_VIP_3MESES = "https://checkout.exemplo.com/vip-3meses"
-    CHECKOUT_VIP_1ANO = "https://checkout.exemplo.com/vip-1ano"
+    CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
+    CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
+    CHECKOUT_SAFADINHA = "https://pay.risepay.com.br/Pay/34c9d16d06564192ab9bfef998088f01"
+    CHECKOUT_DIABINHA+SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
     AUDIO_FILE = "https://github.com/Michelle0800/Plataforma/raw/refs/heads/main/assets/assets_audio_paloma_audio.mp3"
     AUDIO_DURATION = 7
-    IMG_PROFILE = "https://i.ibb.co/ks5CNrDn/IMG-9256.jpg"
+    IMG_PROFILE = "https://i.ibb.co/602BSXNB/IMG-20241114-114311-521.jpg"
     IMG_GALLERY = [
-        "https://i.ibb.co/zhNZL4FF/IMG-9198.jpg",
-        "https://i.ibb.co/Y4B7CbXf/IMG-9202.jpg",
-        "https://i.ibb.co/Fqf0gPPq/IMG-9199.jpg"
+        "https://i.ibb.co/rGZYzWFq/FOTO.jpg",
+        "https://i.ibb.co/3ywqK8Sp/3076512347-jpg-1735240788632.jpg",
+        "https://i.ibb.co/0yCthpzf/2537946408-2024-12-22-10-03-06.jpg"
     ]
     IMG_HOME_PREVIEWS = [
-        "https://i.ibb.co/k2MJg4XC/Save-ClipApp-412457343-378531441368078-7870326395110089440-n.jpg",
-        "https://i.ibb.co/MxqKBk1X/Save-ClipApp-481825770-18486618637042608-2702272791254832108-n.jpg",
-        "https://i.ibb.co/F4CkkYTL/Save-ClipApp-461241348-1219420546053727-2357827070610318448-n.jpg"
+        "https://i.ibb.co/WNmf5LB9/FOTO.jpg",
+        "https://i.ibb.co/3yTRfgQt/In-Shot-20241207-113653997.jpg",
+        "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
     ]
     LOGO_URL = "https://i.ibb.co/LX7x3tcB/Logo-Golden-Pepper-Letreiro-1.png"
 
@@ -180,8 +177,8 @@ def save_persistent_data():
 # MODELOS DE DADOS
 # ======================
 class Persona:
-    PALOMA = """
-    [PERFIL PALOMA]
+    Michelle = """
+    [PERFIL Michelle]
     - Mulher vulgar e safada que adora provocar
     - Linguagem direta e cheia de malícia
     - Frases curtas e sem pontuação perfeita
@@ -196,7 +193,7 @@ class Persona:
     1. Quando o histórico mostra clima sexual:
     Histórico:
     Cliente: sua buceta é rosinha?
-    Paloma: adoro mostrar ela aberta
+    Michelle: adoro mostrar ela aberta
     Cliente: quero ver
     Resposta: ```json
     {
@@ -226,7 +223,7 @@ class Persona:
     3. Quando o contexto não justifica CTA:
     Histórico:
     Cliente: oi
-    Paloma: oi gato
+    Michelle: oi gato
     Resposta: ```json
     {
       "text": "eai gostoso",
@@ -469,7 +466,7 @@ class UiService:
             animation: pulse-ring 2s infinite;
         ">
             <div style="font-size: 3rem;">📱</div>
-            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Paloma...</h3>
+            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px;">
                 <div style="width: 10px; height: 10px; background: #4CAF50; border-radius: 50%;"></div>
                 <span style="font-size: 0.9rem;">Online agora</span>
