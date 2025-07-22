@@ -391,7 +391,7 @@ class ApiService:
             "contents": [
                 {
                     "role": "user",
-                    "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]  # Alterado de Persona.PALOMA para Persona.Michelle
+                    "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
                 }
             ],
             "generationConfig": {
@@ -466,7 +466,7 @@ class UiService:
             animation: pulse-ring 2s infinite;
         ">
             <div style="font-size: 3rem;">📱</div>
-            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>  # Alterado de Paloma para Michelle
+            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px;">
                 <div style="width: 10px; height: 10px; background: #4CAF50; border-radius: 50%;"></div>
                 <span style="font-size: 0.9rem;">Online agora</span>
@@ -496,7 +496,7 @@ class UiService:
         ">
             <div style="font-size: 3rem; color: #4CAF50;">✓</div>
             <h3 style="color: #4CAF50; margin-bottom: 5px;">Chamada atendida!</h3>
-            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>  # Alterado de Paloma para Michelle
+            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -704,8 +704,8 @@ class UiService:
             
             st.markdown("""
             <div class="sidebar-header">
-                <img src="{profile_img}" alt="Michelle">  # Alterado de Paloma para Michelle
-                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Premium</h3>  # Alterado de Paloma para Michelle
+                <img src="{profile_img}" alt="Michelle">
+                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Premium</h3>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
@@ -759,7 +759,7 @@ class UiService:
             st.markdown("---")
             st.markdown("""
             <div style="text-align: center; font-size: 0.7em; color: #888;">
-                <p>© 2024 Michelle Premium</p>  # Alterado de Paloma para Michelle
+                <p>© 2024 Michelle Premium</p>
                 <p>Conteúdo para maiores de 18 anos</p>
             </div>
             """, unsafe_allow_html=True)
@@ -900,7 +900,7 @@ class UiService:
         
         st.markdown(f"""
         <div class="chat-header">
-            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>  # Alterado de Paloma para Michelle
+            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>
         </div>
         """, unsafe_allow_html=True)
         
@@ -964,7 +964,7 @@ class NewPages:
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Michelle Premium</h1>  # Alterado de Paloma para Michelle
+            <h1 style="color: #ff66b3;">Michelle Premium</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             <div style="margin-top: 20px;">
                 <a href="#vip" style="
@@ -1360,7 +1360,7 @@ class ChatService:
         formatted = []
         
         for msg in messages[-max_messages:]:
-            role = "Cliente" if msg["role"] == "user" else "Michelle"  # Alterado de Paloma para Michelle
+            role = "Cliente" if msg["role"] == "user" else "Michelle"
             content = msg["content"]
             if content == "[ÁUDIO]":
                 content = "[Enviou um áudio sensual]"
@@ -1639,7 +1639,7 @@ def main():
             st.markdown("""
             <div style="text-align: center; margin: 50px 0;">
                 <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
-                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>  # Alterado de Paloma para Michelle
+                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
                 <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
