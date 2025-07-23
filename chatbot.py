@@ -98,7 +98,6 @@ class Config:
         "https://i.ibb.co/3yTRfgQt/In-Shot-20241207-113653997.jpg",
         "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
     ]
-    LOGO_URL = "https://i.ibb.co/LX7x3tcB/Logo-Golden-Pepper-Letreiro-1.png"
 
 # ======================
 # PERSISTÊNCIA DE ESTADO
@@ -652,16 +651,6 @@ class UiService:
                     background: linear-gradient(180deg, #1e0033 0%, #3c0066 100%) !important;
                     border-right: 1px solid #ff66b3 !important;
                 }
-                .sidebar-logo-container {
-                    margin: -25px -25px 0px -25px;
-                    padding: 0;
-                    text-align: left;
-                }
-                .sidebar-logo {
-                    max-width: 100%;
-                    height: auto;
-                    margin-bottom: -10px;
-                }
                 .sidebar-header {
                     text-align: center; 
                     margin-bottom: 20px;
@@ -689,31 +678,10 @@ class UiService:
                 .menu-item:hover {
                     background: rgba(255, 102, 179, 0.2);
                 }
-                .sidebar-logo {
-                    width: 280px;
-                    height: auto;
-                    object-fit: contain;
-                    margin-left: -15px;
-                    margin-top: -15px;
-                }
-                @media (min-width: 768px) {
-                    .sidebar-logo {
-                        width: 320px;
-                    }
-                }
                 [data-testid="stSidebarNav"] {
-                    margin-top: -50px;
+                    margin-top: 20px;
                 }
-                .sidebar-logo-container {
-                    position: relative;
-                    z-index: 1;
             </style>
-            """, unsafe_allow_html=True)
-            
-            st.markdown(f"""
-            <div class="sidebar-logo-container">
-                <img src="{Config.LOGO_URL}" class="sidebar-logo" alt="Golden Pepper Logo">
-            </div>
             """, unsafe_allow_html=True)
             
             st.markdown("""
@@ -1003,7 +971,7 @@ class NewPages:
 
         st.markdown("---")
         
-        if st.button("Iniciar Conversa Privada", 
+        if st.button("💬 Iniciar Conversa Privada", 
                     use_container_width=True,
                     type="primary"):
             st.session_state.current_page = "chat"
@@ -1657,7 +1625,7 @@ def main():
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
-            if st.button("Iniciar Conversa", type="primary", use_container_width=True):
+            if st.button("💬 Iniciar Conversa", type="primary", use_container_width=True):
                 st.session_state.update({
                     'chat_started': True,
                     'current_page': 'chat',
