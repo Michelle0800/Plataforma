@@ -18,7 +18,7 @@ from functools import lru_cache
 # CONFIGURAÇÃO INICIAL DO STREAMLIT
 # ======================
 st.set_page_config(
-    page_title="Paloma Premium",
+    page_title="Michelle Souza",
     page_icon="💋",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -167,7 +167,7 @@ def save_persistent_data():
         'age_verified', 'messages', 'request_count',
         'connection_complete', 'chat_started', 'audio_sent',
         'current_page', 'show_vip_offer', 'session_id',
-        'last_cta_time'  # Novo campo adicionado
+        'last_cta_time'
     ]
     
     new_data = {key: st.session_state.get(key) for key in persistent_keys if key in st.session_state}
@@ -180,8 +180,8 @@ def save_persistent_data():
 # MODELOS DE DADOS
 # ======================
 class Persona:
-    PALOMA = """
-    [PERFIL PALOMA]
+    MICHELLE = """
+    [PERFIL MICHELLE]
     - Mulher vulgar e safada que adora provocar
     - Linguagem direta e cheia de malícia
     - Frases curtas e sem pontuação perfeita
@@ -196,7 +196,7 @@ class Persona:
     1. Quando o histórico mostra clima sexual:
     Histórico:
     Cliente: sua buceta é rosinha?
-    Paloma: adoro mostrar ela aberta
+    Michelle: adoro mostrar ela aberta
     Cliente: quero ver
     Resposta: ```json
     {
@@ -226,7 +226,7 @@ class Persona:
     3. Quando o contexto não justifica CTA:
     Histórico:
     Cliente: oi
-    Paloma: oi gato
+    Michelle: oi gato
     Resposta: ```json
     {
       "text": "eai gostoso",
@@ -244,10 +244,9 @@ class CTAEngine:
         if len(conversation_history) < 2:
             return False
 
-        # Não mostrar CTA se já teve um recentemente
         if 'last_cta_time' in st.session_state:
             elapsed = time.time() - st.session_state.last_cta_time
-            if elapsed < 120:  # 2 minutos de intervalo entre CTAs
+            if elapsed < 120:
                 return False
 
         last_msgs = []
@@ -394,7 +393,7 @@ class ApiService:
             "contents": [
                 {
                     "role": "user",
-                    "parts": [{"text": f"{Persona.PALOMA}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
+                    "parts": [{"text": f"{Persona.MICHELLE}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
                 }
             ],
             "generationConfig": {
@@ -419,7 +418,7 @@ class ApiService:
                     if not CTAEngine.should_show_cta(st.session_state.messages):
                         resposta["cta"]["show"] = False
                     else:
-                        st.session_state.last_cta_time = time.time()  # Registrar quando CTA foi mostrado
+                        st.session_state.last_cta_time = time.time()
                 
                 return resposta
             
@@ -469,7 +468,7 @@ class UiService:
             animation: pulse-ring 2s infinite;
         ">
             <div style="font-size: 3rem;">📱</div>
-            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Paloma...</h3>
+            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px;">
                 <div style="width: 10px; height: 10px; background: #4CAF50; border-radius: 50%;"></div>
                 <span style="font-size: 0.9rem;">Online agora</span>
@@ -499,7 +498,7 @@ class UiService:
         ">
             <div style="font-size: 3rem; color: #4CAF50;">✓</div>
             <h3 style="color: #4CAF50; margin-bottom: 5px;">Chamada atendida!</h3>
-            <p style="font-size: 0.9rem; margin:0;">Paloma está te esperando...</p>
+            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -695,7 +694,6 @@ class UiService:
                 .sidebar-logo-container {
                     position: relative;
                     z-index: 1;
-                }
             </style>
             """, unsafe_allow_html=True)
             
@@ -707,8 +705,8 @@ class UiService:
             
             st.markdown("""
             <div class="sidebar-header">
-                <img src="{profile_img}" alt="Paloma">
-                <h3 style="color: #ff66b3; margin-top: 10px;">Paloma Premium</h3>
+                <img src="{profile_img}" alt="Michelle">
+                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Souza</h3>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
@@ -762,7 +760,7 @@ class UiService:
             st.markdown("---")
             st.markdown("""
             <div style="text-align: center; font-size: 0.7em; color: #888;">
-                <p>© 2024 Paloma Premium</p>
+                <p>© 2024 Michelle Souza</p>
                 <p>Conteúdo para maiores de 18 anos</p>
             </div>
             """, unsafe_allow_html=True)
@@ -903,7 +901,7 @@ class UiService:
         
         st.markdown(f"""
         <div class="chat-header">
-            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Paloma</h2>
+            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>
         </div>
         """, unsafe_allow_html=True)
         
@@ -967,7 +965,7 @@ class NewPages:
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Paloma Premium</h1>
+            <h1 style="color: #ff66b3;">Michelle Souza</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             <div style="margin-top: 20px;">
                 <a href="#vip" style="
@@ -1351,7 +1349,7 @@ class ChatService:
             'audio_sent': False,
             'current_page': 'home',
             'show_vip_offer': False,
-            'last_cta_time': 0  # Novo campo adicionado
+            'last_cta_time': 0
         }
         
         for key, default in defaults.items():
@@ -1363,7 +1361,7 @@ class ChatService:
         formatted = []
         
         for msg in messages[-max_messages:]:
-            role = "Cliente" if msg["role"] == "user" else "Paloma"
+            role = "Cliente" if msg["role"] == "user" else "Michelle"
             content = msg["content"]
             if content == "[ÁUDIO]":
                 content = "[Enviou um áudio sensual]"
@@ -1414,11 +1412,10 @@ class ChatService:
                                 </div>
                                 """, unsafe_allow_html=True)
                                 
-                                # Mostrar botão apenas na última mensagem
                                 if content_data.get("cta", {}).get("show") and idx == len(st.session_state.messages[-12:]) - 1:
                                     if st.button(
                                         content_data.get("cta", {}).get("label", "Ver Ofertas"),
-                                        key=f"cta_button_{hash(msg['content'])}",  # Chave única baseada no conteúdo
+                                        key=f"cta_button_{hash(msg['content'])}",
                                         use_container_width=True
                                     ):
                                         st.session_state.current_page = content_data.get("cta", {}).get("target", "offers")
@@ -1642,7 +1639,7 @@ def main():
             st.markdown("""
             <div style="text-align: center; margin: 50px 0;">
                 <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
-                <h2 style="color: #ff66b3; margin-top: 15px;">Paloma</h2>
+                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
                 <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
