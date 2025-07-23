@@ -725,13 +725,12 @@ class UiService:
             st.markdown("### Upgrade VIP")
             st.markdown("""
             <div class="vip-badge">
-                <p style="margin: 0 0 10px; font-weight: bold;">Acesso completo por apenas</p>
-                <p style="margin: 0; font-size: 1.5em; font-weight: bold;">R$ 29,90/mês</p>
-                <p style="margin: 10px 0 0; font-size: 0.8em;">Cancele quando quiser</p>
+                <p style="margin: 0; font-size: 1.1em; font-weight: bold;">Acesso completo a fotos e vídeos</p>
+                <p style="margin: 5px 0 0; font-size: 1em;">a partir de R$19,90</p>
             </div>
             """, unsafe_allow_html=True)
             
-            if st.button("Tornar-se VIP", use_container_width=True, type="primary"):
+            if st.button("Adquira Já", use_container_width=True, type="primary"):
                 st.session_state.current_page = "offers"
                 save_persistent_data()
                 st.rerun()
@@ -785,7 +784,7 @@ class UiService:
         </div>
         """, unsafe_allow_html=True)
 
-        if st.button("Tornar-se VIP", 
+        if st.button("Adquira Já", 
                     key="vip_button_gallery", 
                     use_container_width=True,
                     type="primary"):
@@ -822,10 +821,10 @@ class UiService:
                 save_persistent_data()
                 st.rerun()
         with cols[3]:
-            if st.button("VIP", key="shortcut_vip",
-                       help="Acessar área VIP",
+            if st.button("💬Chat", key="shortcut_chat",
+                       help="Voltar ao chat",
                        use_container_width=True):
-                st.session_state.current_page = "vip"
+                st.session_state.current_page = "chat"
                 save_persistent_data()
                 st.rerun()
 
@@ -1097,7 +1096,7 @@ class NewPages:
         <div class="package-box package-santinha">
             <div class="package-header">
                 <h3 style="color: #ff66b3;">SANTINHA</h3>
-                <div class="package-price" style="color: #ff66b3;">R$ 49,90</div>
+                <div class="package-price" style="color: #ff66b3;">R$ 19,90</div>
                 <small>para iniciantes</small>
             </div>
             <ul class="package-benefits">
