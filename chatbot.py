@@ -439,8 +439,7 @@ class ApiService:
                     "contents": [
                         {
                             "role": "user",
-                            "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
-                        }
+                            "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]}
                     ],
                     "generationConfig": {
                         "temperature": 0.9,
@@ -755,7 +754,6 @@ class UiService:
                 .sidebar-logo-container {
                     position: relative;
                     z-index: 1;
-                }
             </style>
             """, unsafe_allow_html=True)
             
@@ -1157,7 +1155,7 @@ class NewPages:
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
                 <a href="{checkout_start}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
-                    background: linear-gradient(45deg, #ff66b3, #ff1493);
+                    background: linear-gradient(45deg, #ff1493, #9400d3);
                     color: white;
                     text-align: center;
                     padding: 10px;
