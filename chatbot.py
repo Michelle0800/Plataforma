@@ -577,47 +577,39 @@ class UiService:
     def age_verification():
         st.markdown("""
         <style>
-            .age-verification-title {
+            .title-container {
                 text-align: center;
-                font-size: 2.5rem;
                 margin-bottom: 1rem;
-                color: #ff1493;
+            }
+            .age-title {
+                font-size: 2.2rem;
+                font-weight: 700;
+                color: #ff66b3;
+                margin: 0;
                 text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
             }
-            .age-verification-container {
+            .age-verification {
                 max-width: 600px;
                 margin: 0 auto;
                 padding: 2rem;
-                background: linear-gradient(to bottom, #ffffff, #f0f0f0, #1e0033);
+                background: linear-gradient(145deg, #1e0033, #3c0066);
                 border-radius: 15px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 102, 179, 0.5);
-                color: #333;
+                border: 1px solid rgba(255, 102, 179, 0.2);
+                color: white;
             }
             .age-header {
                 display: flex;
                 align-items: center;
                 gap: 15px;
                 margin-bottom: 1.5rem;
-                justify-content: center;
             }
             .age-icon {
                 font-size: 2.5rem;
-                color: #ff1493;
-            }
-            .age-title {
-                font-size: 1.8rem;
-                font-weight: 700;
-                margin: 0;
-                color: #ff1493;
+                color: #ff66b3;
             }
             .age-content {
-                margin-bottom: 2rem;
-                text-align: center;
-            }
-            .age-content p {
-                margin-bottom: 1rem;
-                color: #333;
+                margin-bottom: 1.5rem;
             }
             .stButton>button {
                 background: linear-gradient(45deg, #ff1493, #9400d3) !important;
@@ -628,39 +620,33 @@ class UiService:
                 font-size: 1rem !important;
                 font-weight: bold !important;
                 transition: all 0.3s !important;
-                box-shadow: 0 4px 15px rgba(148, 0, 211, 0.3) !important;
-                width: 100%;
+                box-shadow: 0 4px 8px rgba(255, 20, 147, 0.3) !important;
             }
             .stButton>button:hover {
                 transform: translateY(-2px) !important;
-                box-shadow: 0 6px 20px rgba(148, 0, 211, 0.4) !important;
-            }
-            @media (max-width: 768px) {
-                .age-verification-title {
-                    font-size: 2rem;
-                }
-                .age-verification-container {
-                    padding: 1.5rem;
-                }
+                box-shadow: 0 6px 12px rgba(255, 20, 147, 0.4) !important;
             }
         </style>
         """, unsafe_allow_html=True)
 
-        # Título centralizado acima do container
-        st.markdown('<h1 class="age-verification-title">💋Michelle - Conteúdo Secreto</h1>', unsafe_allow_html=True)
-        
-        # Container da verificação com gradiente branco para escuro
+        # Título centralizado acima do container de verificação
+        st.markdown("""
+        <div class="title-container">
+            <h1 class="age-title">💋 Michelle - Conteúdo Secreto</h1>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Container de verificação de idade
         with st.container():
             st.markdown("""
-            <div class="age-verification-container">
+            <div class="age-verification">
                 <div class="age-header">
                     <div class="age-icon">🔞</div>
-                    <h1 class="age-title">Verificação de Idade</h1>
+                    <h2 style="color: #ff66b3; margin:0;">Verificação de Idade</h2>
                 </div>
                 <div class="age-content">
-                    <p>Este site contém material adulto explícito destinado exclusivamente a maiores de 18 anos.</p>
-                    <p>Ao acessar, você confirma que possui idade legal para visualizar este tipo de conteúdo em sua jurisdição.</p>
-                    <p>Todos os conteúdos são protegidos por direitos autorais e seu acesso é restrito.</p>
+                    <p>Este site contém material explícito destinado exclusivamente a adultos maiores de 18 anos.</p>
+                    <p>Ao acessar este conteúdo, você declara estar em conformidade com todas as leis locais aplicáveis.</p>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -668,9 +654,10 @@ class UiService:
         # Botão centralizado abaixo do container
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            if st.button("CONFIRMO QUE SOU MAIOR DE 18 ANOS", 
+            if st.button("Confirmo que sou maior de 18 anos", 
                         key="age_checkbox",
-                        use_container_width=True):
+                        use_container_width=True,
+                        type="primary"):
                 st.session_state.age_verified = True
                 save_persistent_data()
                 st.rerun()
@@ -781,9 +768,13 @@ class UiService:
                 background: rgba(255, 20, 147, 0.1);
                 padding: 10px;
                 border-radius: 8px;
+                margin-bottom: 15px;
                 text-align: center;
             ">
-                <p style="margin:0;">Acesse conteúdo exclusivo</p>
+                <p style="margin:0; font-size:0.9em;">
+                    Mensagens hoje: <strong>{st.session_state.request_count}/{Config.MAX_REQUESTS_PER_SESSION}</strong>
+                </p>
+                <progress value="{st.session_state.request_count}" max="{Config.MAX_REQUESTS_PER_SESSION}" style="width:100%; height:6px;"></progress>
             </div>
             """, unsafe_allow_html=True)
             
