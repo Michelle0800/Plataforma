@@ -75,7 +75,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # CONSTANTES E CONFIGURAÇÕES
 # ======================
 class Config:
-    API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
+    API_KEY = "AIzaSyDDb7Bkt-zkmo9U82WCnaWXAv_GdnKpg-M"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
     CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
     CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
