@@ -98,7 +98,7 @@ class Config:
         "https://i.ibb.co/3yTRfgQt/In-Shot-20241207-113653997.jpg",
         "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
     ]
-    LOGO_URL = ""
+    
 
 # ======================
 # PERSISTÊNCIA DE ESTADO
