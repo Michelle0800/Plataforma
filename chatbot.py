@@ -727,10 +727,10 @@ class UiService:
             st.markdown("### Menu Exclusivo")
             
             menu_options = {
-                "Início": "home",
-                "Galeria Privada": "gallery",
-                "Mensagens": "messages",
-                "Ofertas Especiais": "offers"
+                "💋Início": "home",
+                "🔥Galeria Privada": "gallery",
+                "💌Mensagens": "messages",
+                "🎁Ofertas Especiais": "offers"
             }
             
             for option, page in menu_options.items():
@@ -774,7 +774,7 @@ class UiService:
             st.markdown("""
             <div style="text-align: center; font-size: 0.7em; color: #888;">
                 <p>© 2024 Michelle Souza</p>
-                <p>Conteúdo para maiores de 18 anos</p>
+                <p>Conteúdo para maiores de 18 anos🔞</p>
             </div>
             """, unsafe_allow_html=True)
 
@@ -835,21 +835,21 @@ class UiService:
     def chat_shortcuts():
         cols = st.columns(4)
         with cols[0]:
-            if st.button("Início", key="shortcut_home", 
+            if st.button("🏠Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
                        use_container_width=True):
                 st.session_state.current_page = "home"
                 save_persistent_data()
                 st.rerun()
         with cols[1]:
-            if st.button("Galeria", key="shortcut_gallery",
+            if st.button("📸Galeria", key="shortcut_gallery",
                        help="Acessar galeria privada",
                        use_container_width=True):
                 st.session_state.current_page = "gallery"
                 save_persistent_data()
                 st.rerun()
         with cols[2]:
-            if st.button("Ofertas", key="shortcut_offers",
+            if st.button("🎁Ofertas", key="shortcut_offers",
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
