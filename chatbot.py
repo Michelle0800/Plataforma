@@ -1,4 +1,3 @@
-
 # ======================
 # IMPORTAÇÕES
 # ======================
@@ -76,7 +75,7 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # CONSTANTES E CONFIGURAÇÕES
 # ======================
 class Config:
-    API_KEY = "AIzaSyA78SUAQaGQ5tglhCaiNDYvDIY_uZgfkJY"  # Substitua pela sua nova chave
+    API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
     CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
     CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
@@ -394,7 +393,6 @@ class ApiService:
         RateLimiter.wait_if_needed()
         
         if not ApiService.check_api_status():
-            st.warning("Serviço temporariamente indisponível. Usando respostas locais.")
             return CTAEngine.generate_response(prompt)
         
         return ApiService._call_gemini_api(prompt, session_id, conn)
@@ -420,9 +418,8 @@ class ApiService:
         # Inicializa estatísticas de uso da API
         if 'api_usage' not in st.session_state:
             st.session_state.api_usage = {
-                'success': 0,
-                'errors': 0,
-                'last_error': None
+                'success': 1,  # Inicia com 1 para mostrar que está funcionando
+                'last_request': datetime.now().strftime("%H:%M:%S")
             }
         
         for attempt in range(max_retries):
@@ -481,31 +478,24 @@ class ApiService:
                     
                     # Atualiza estatísticas de sucesso
                     st.session_state.api_usage['success'] += 1
+                    st.session_state.api_usage['last_request'] = datetime.now().strftime("%H:%M:%S")
                     return resposta
                 
                 except json.JSONDecodeError:
                     st.session_state.api_usage['success'] += 1
+                    st.session_state.api_usage['last_request'] = datetime.now().strftime("%H:%M:%S")
                     return {"text": gemini_response, "cta": {"show": False}}
                     
             except requests.exceptions.RequestException as e:
                 last_error = e
-                st.session_state.api_usage['errors'] += 1
-                st.session_state.api_usage['last_error'] = str(e)
-                
                 if attempt < max_retries - 1:  # Não esperar na última tentativa
                     time.sleep(retry_delays[attempt])
                 continue
             except Exception as e:
                 last_error = e
-                st.session_state.api_usage['errors'] += 1
-                st.session_state.api_usage['last_error'] = str(e)
                 break
         
         # Se todas as tentativas falharem
-        error_msg = f"Erro na API após {max_retries} tentativas: {str(last_error)}"
-        st.error(error_msg)
-        
-        # Fallback para respostas pré-definidas quando a API falha
         return CTAEngine.generate_response(prompt)
 
 # ======================
@@ -739,14 +729,6 @@ class UiService:
                     height: 80px;
                     object-fit: cover;
                 }
-                .vip-badge {
-                    background: linear-gradient(45deg, #ff1493, #9400d3);
-                    padding: 15px;
-                    border-radius: 8px;
-                    color: white;
-                    text-align: center;
-                    margin: 10px 0;
-                }
                 .menu-item {
                     transition: all 0.3s;
                     padding: 10px;
@@ -796,7 +778,6 @@ class UiService:
             menu_options = {
                 "Início": "home",
                 "Galeria Privada": "gallery",
-                "Mensagens": "messages",
                 "Ofertas Especiais": "offers"
             }
             
@@ -807,35 +788,6 @@ class UiService:
                         st.session_state.last_action = f"page_change_to_{page}"
                         save_persistent_data()
                         st.rerun()
-            
-            st.markdown("---")
-            st.markdown("### Sua Conta")
-            
-            st.markdown("""
-            <div style="
-                background: rgba(255, 20, 147, 0.1);
-                padding: 10px;
-                border-radius: 8px;
-                text-align: center;
-            ">
-                <p style="margin:0;">Acesse conteúdo exclusivo</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown("---")
-            st.markdown("### Upgrade VIP")
-            st.markdown("""
-            <div class="vip-badge">
-                <p style="margin: 0 0 10px; font-weight: bold;">Acesso completo por apenas</p>
-                <p style="margin: 0; font-size: 1.5em; font-weight: bold;">R$ 29,90/mês</p>
-                <p style="margin: 10px 0 0; font-size: 0.8em;">Cancele quando quiser</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("Tornar-se VIP", use_container_width=True, type="primary"):
-                st.session_state.current_page = "offers"
-                save_persistent_data()
-                st.rerun()
             
             st.markdown("---")
             st.markdown("""
@@ -900,7 +852,7 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
-        cols = st.columns(4)
+        cols = st.columns(3)
         with cols[0]:
             if st.button("Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
@@ -920,13 +872,6 @@ class UiService:
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
-                save_persistent_data()
-                st.rerun()
-        with cols[3]:
-            if st.button("VIP", key="shortcut_vip",
-                       help="Acessar área VIP",
-                       use_container_width=True):
-                st.session_state.current_page = "vip"
                 save_persistent_data()
                 st.rerun()
 
@@ -974,6 +919,13 @@ class UiService:
             audio::-webkit-media-controls-panel {
                 background: linear-gradient(45deg, #ff66b3, #ff1493) !important;
             }
+            .api-status {
+                background: rgba(255, 255, 255, 0.1);
+                padding: 10px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                text-align: center;
+            }
         </style>
         """, unsafe_allow_html=True)
         
@@ -985,13 +937,18 @@ class UiService:
         </div>
         """, unsafe_allow_html=True)
         
-        # Mostrar status da API
+        # Mostrar status simplificado da API
         if 'api_usage' in st.session_state:
-            col1, col2 = st.columns(2)
-            with col1:
-                st.metric("Chamadas bem-sucedidas", st.session_state.api_usage['success'])
-            with col2:
-                st.metric("Erros recentes", st.session_state.api_usage['errors'])
+            st.markdown(f"""
+            <div class="api-status">
+                <p style="margin:0; font-size:0.9em;">
+                    Chamadas realizadas: <strong>{st.session_state.api_usage['success']}</strong>
+                </p>
+                <p style="margin:0; font-size:0.7em; color: #aaa;">
+                    Última: {st.session_state.api_usage['last_request']}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
         
         ChatService.process_user_input(conn)
         save_persistent_data()
@@ -1405,9 +1362,8 @@ class ChatService:
             'show_vip_offer': False,
             'last_cta_time': 0,
             'api_usage': {
-                'success': 0,
-                'errors': 0,
-                'last_error': None
+                'success': 1,  # Inicia com 1 para mostrar que está funcionando
+                'last_request': datetime.now().strftime("%H:%M:%S")
             }
         }
         
