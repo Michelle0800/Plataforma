@@ -77,12 +77,10 @@ class Config:
     API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
     VIP_LINK = "https://exemplo.com/vip"
-    CHECKOUT_START = "https://checkout.exemplo.com/start"
-    CHECKOUT_PREMIUM = "https://checkout.exemplo.com/premium"
-    CHECKOUT_EXTREME = "https://checkout.exemplo.com/extreme"
-    CHECKOUT_VIP_1MES = "https://checkout.exemplo.com/vip-1mes"
-    CHECKOUT_VIP_3MESES = "https://checkout.exemplo.com/vip-3meses"
-    CHECKOUT_VIP_1ANO = "https://checkout.exemplo.com/vip-1ano"
+    CHECKOUT_SANTINHA = "https://checkout.exemplo.com/santinha"
+    CHECKOUT_DANADINHA = "https://checkout.exemplo.com/danadinha"
+    CHECKOUT_SAFADINHA = "https://checkout.exemplo.com/safadinha"
+    CHECKOUT_DIABINHA_SECRETO = "https://checkout.exemplo.com/diabinha-secreto"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
     AUDIO_FILE = "https://github.com/gustapb77/ChatBotHot/raw/refs/heads/main/assets/audio/paloma_audio.mp3"
@@ -1008,14 +1006,17 @@ class NewPages:
                 transform: translateY(-5px);
                 box-shadow: 0 10px 20px rgba(255, 102, 179, 0.3);
             }
-            .package-start {
+            .package-santinha {
                 border-color: #ff66b3;
             }
-            .package-premium {
+            .package-danadinha {
                 border-color: #9400d3;
             }
-            .package-extreme {
+            .package-safadinha {
                 border-color: #ff0066;
+            }
+            .package-diabinha {
+                border-color: #ff0000;
             }
             .package-header {
                 text-align: center;
@@ -1079,6 +1080,7 @@ class NewPages:
                 padding: 5px 10px;
                 border-radius: 5px;
                 font-weight: bold;
+            }
         </style>
         """, unsafe_allow_html=True)
 
@@ -1092,9 +1094,9 @@ class NewPages:
         st.markdown('<div class="package-container">', unsafe_allow_html=True)
         
         st.markdown("""
-        <div class="package-box package-start">
+        <div class="package-box package-santinha">
             <div class="package-header">
-                <h3 style="color: #ff66b3;">START</h3>
+                <h3 style="color: #ff66b3;">SANTINHA</h3>
                 <div class="package-price" style="color: #ff66b3;">R$ 49,90</div>
                 <small>para iniciantes</small>
             </div>
@@ -1106,7 +1108,7 @@ class NewPages:
                 <li>Fotos Buceta</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_start}" target="_blank" rel="noopener noreferrer" style="
+                <a href="{checkout_santinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff66b3, #ff1493);
                     color: white;
@@ -1123,13 +1125,13 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_start=Config.CHECKOUT_START), unsafe_allow_html=True)
+        """.format(checkout_santinha=Config.CHECKOUT_SANTINHA), unsafe_allow_html=True)
 
         st.markdown("""
-        <div class="package-box package-premium">
+        <div class="package-box package-danadinha">
             <div class="package-badge">POPULAR</div>
             <div class="package-header">
-                <h3 style="color: #9400d3;">PREMIUM</h3>
+                <h3 style="color: #9400d3;">DANADINHA</h3>
                 <div class="package-price" style="color: #9400d3;">R$ 99,90</div>
                 <small>experiência completa</small>
             </div>
@@ -1143,7 +1145,7 @@ class NewPages:
                 <li>Videos Masturbando</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_premium}" target="_blank" rel="noopener noreferrer" style="
+                <a href="{checkout_danadinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #9400d3, #ff1493);
                     color: white;
@@ -1160,12 +1162,12 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_premium=Config.CHECKOUT_PREMIUM), unsafe_allow_html=True)
+        """.format(checkout_danadinha=Config.CHECKOUT_DANADINHA), unsafe_allow_html=True)
 
         st.markdown("""
-        <div class="package-box package-extreme">
+        <div class="package-box package-safadinha">
             <div class="package-header">
-                <h3 style="color: #ff0066;">EXTREME</h3>
+                <h3 style="color: #ff0066;">SAFADINHA</h3>
                 <div class="package-price" style="color: #ff0066;">R$ 199,90</div>
                 <small>para verdadeiros fãs</small>
             </div>
@@ -1181,7 +1183,7 @@ class NewPages:
                 <li>Acesso a conteúdos futuros</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_extreme}" target="_blank" rel="noopener noreferrer" style="
+                <a href="{checkout_safadinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff0066, #9400d3);
                     color: white;
@@ -1198,7 +1200,41 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_extreme=Config.CHECKOUT_EXTREME), unsafe_allow_html=True)
+        """.format(checkout_safadinha=Config.CHECKOUT_SAFADINHA), unsafe_allow_html=True)
+
+        st.markdown("""
+        <div class="package-box package-diabinha">
+            <div class="package-header">
+                <h3 style="color: #ff0000;">DIABINHA SECRETO</h3>
+                <div class="package-price" style="color: #ff0000;">R$ 299,90</div>
+                <small>conteúdo ultra exclusivo</small>
+            </div>
+            <ul class="package-benefits">
+                <li>50 fotos ultra-raras</li>
+                <li>20 vídeos exclusivos</li>
+                <li>Conteúdo personalizado</li>
+                <li>Videochamada especial</li>
+                <li>Acesso vitalício</li>
+            </ul>
+            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
+                <a href="{checkout_diabinha}" target="_blank" rel="noopener noreferrer" style="
+                    display: block;
+                    background: linear-gradient(45deg, #ff0000, #9400d3);
+                    color: white;
+                    text-align: center;
+                    padding: 10px;
+                    border-radius: 8px;
+                    text-decoration: none;
+                    font-weight: bold;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='scale(1.05)'" 
+                onmouseout="this.style.transform='scale(1)'"
+                onclick="this.innerHTML='REDIRECIONANDO ⌛'; this.style.opacity='0.7'">
+                    QUERO ESTE PACOTE ➔
+                </a>
+            </div>
+        </div>
+        """.format(checkout_diabinha=Config.CHECKOUT_DIABINHA_SECRETO), unsafe_allow_html=True)
 
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1235,64 +1271,6 @@ class NewPages:
         setTimeout(updateCountdown, 1000);
         </script>
         """, height=0)
-
-        plans = [
-            {
-                "name": "1 Mês",
-                "price": "R$ 29,90",
-                "original": "R$ 49,90",
-                "benefits": ["Acesso total", "Conteúdo novo diário", "Chat privado"],
-                "tag": "COMUM",
-                "link": Config.CHECKOUT_VIP_1MES + "?plan=1mes"
-            },
-            {
-                "name": "3 Meses",
-                "price": "R$ 69,90",
-                "original": "R$ 149,70",
-                "benefits": ["25% de desconto", "Bônus: 1 vídeo exclusivo", "Prioridade no chat"],
-                "tag": "MAIS POPULAR",
-                "link": Config.CHECKOUT_VIP_3MESES + "?plan=3meses"
-            },
-            {
-                "name": "1 Ano",
-                "price": "R$ 199,90",
-                "original": "R$ 598,80",
-                "benefits": ["66% de desconto", "Presente surpresa mensal", "Acesso a conteúdos raros"],
-                "tag": "MELHOR CUSTO-BENEFÍCIO",
-                "link": Config.CHECKOUT_VIP_1ANO + "?plan=1ano"
-            }
-        ]
-
-        for plan in plans:
-            with st.container():
-                st.markdown(f"""
-                <div class="offer-card">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h3>{plan['name']}</h3>
-                        {f'<span class="offer-highlight">{plan["tag"]}</span>' if plan["tag"] else ''}
-                    </div>
-                    <div style="margin: 10px 0;">
-                        <span style="font-size: 1.8em; color: #ff66b3; font-weight: bold;">{plan['price']}</span>
-                        <span style="text-decoration: line-through; color: #888; margin-left: 10px;">{plan['original']}</span>
-                    </div>
-                    <ul style="padding-left: 20px;">
-                        {''.join([f'<li style="margin-bottom: 5px;">{benefit}</li>' for benefit in plan['benefits']])}
-                    </ul>
-                    <div style="text-align: center; margin-top: 15px;">
-                        <a href="{plan['link']}" style="
-                            background: linear-gradient(45deg, #ff1493, #9400d3);
-                            color: white;
-                            padding: 10px 20px;
-                            border-radius: 30px;
-                            text-decoration: none;
-                            display: inline-block;
-                            font-weight: bold;
-                        ">
-                            Assinar {plan['name']}
-                        </a>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
 
         if st.button("Voltar ao chat", key="back_from_offers"):
             st.session_state.current_page = "chat"
