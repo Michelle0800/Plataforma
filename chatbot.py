@@ -99,7 +99,7 @@ class Config:
         "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
     ]
     
-
+LOGO_URL = "https://i.ibb.co/LX7x3tcB/Logo-Golden-Pepper-Letreiro-1.png"
 # ======================
 # PERSISTÊNCIA DE ESTADO
 # ======================
