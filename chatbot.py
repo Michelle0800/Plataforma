@@ -581,7 +581,7 @@ class UiService:
                 max-width: 600px;
                 margin: 2rem auto;
                 padding: 2rem;
-                background: linear-gradient(145deg, #1e0033, #3c0066);
+                background: #000000;
                 border-radius: 15px;
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                 border: 1px solid rgba(255, 102, 179, 0.2);
@@ -590,6 +590,7 @@ class UiService:
             .age-header {
                 display: flex;
                 align-items: center;
+                justify-content: center;
                 gap: 15px;
                 margin-bottom: 1.5rem;
             }
@@ -603,6 +604,14 @@ class UiService:
                 margin: 0;
                 color: #ff66b3;
             }
+            .stButton>button {
+                background: linear-gradient(45deg, #ff1493, #9400d3) !important;
+                color: white !important;
+                border: none !important;
+                border-radius: 20px !important;
+                padding: 10px 24px !important;
+                font-weight: bold !important;
+            }
         </style>
         """, unsafe_allow_html=True)
 
@@ -610,8 +619,7 @@ class UiService:
             st.markdown("""
             <div class="age-verification">
                 <div class="age-header">
-                    <div class="age-icon">🔞</div>
-                    <h1 class="age-title">Verificação de Idade</h1>
+                    <h1 class="age-title">💋Michelle - Conteúdo Secreto</h1>
                 </div>
                 <div class="age-content">
                     <p>Este site contém material explícito destinado exclusivamente a adultos maiores de 18 anos.</p>
@@ -622,7 +630,7 @@ class UiService:
 
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            if st.button("Confirmo que sou maior de 18 anos", 
+            if st.button("✅ Confirmo que sou maior de 18 anos", 
                         key="age_checkbox",
                         use_container_width=True,
                         type="primary"):
