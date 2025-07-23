@@ -715,6 +715,7 @@ class UiService:
                 background: rgba(255, 20, 147, 0.1);
                 padding: 10px;
                 border-radius: 8px;
+                margin-bottom: 15px;
                 text-align: center;
             ">
                 <p style="margin:0;">Acesse conteúdo exclusivo</p>
@@ -780,7 +781,7 @@ class UiService:
         st.markdown("""
         <div style="text-align: center;">
             <h4>Desbloqueie acesso completo</h4>
-            <p>Assine o plano VIP para ver todos os conteúdos</p>
+            <p>Adquira algum dos meus pacotes para ver todos os conteúdos</p>
         </div>
         """, unsafe_allow_html=True)
 
@@ -938,6 +939,31 @@ class NewPages:
             .preview-img:hover {
                 filter: blur(0) brightness(1);
             }
+            .intro-text {
+                font-size: 1.5em;
+                margin: 30px 0;
+                color: #ff66b3;
+                font-weight: bold;
+                text-align: center;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            }
+            .vip-btn {
+                background: #ff66b3;
+                color: white;
+                padding: 12px 30px;
+                border-radius: 30px;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-block;
+                margin: 20px auto;
+                transition: all 0.3s;
+                border: none;
+                cursor: pointer;
+            }
+            .vip-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(255,102,179,0.4);
+            }
         </style>
         """, unsafe_allow_html=True)
 
@@ -945,17 +971,14 @@ class NewPages:
         <div class="hero-banner">
             <h1 style="color: #ff66b3;">Michelle Souza</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
+            
             <div style="margin-top: 20px;">
-                <a href="#vip" style="
-                    background: #ff66b3;
-                    color: white;
-                    padding: 10px 25px;
-                    border-radius: 30px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    display: inline-block;
-                ">Quero Acessar Tudo</a>
+                <button class="vip-btn" onclick="window.location.hash='offers'">Quero Acessar Tudo</button>
             </div>
+        </div>
+        
+        <div class="intro-text">
+            Prazer, Eu sou a Michelle!
         </div>
         """, unsafe_allow_html=True)
 
