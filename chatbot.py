@@ -1163,7 +1163,7 @@ class NewPages:
             <div class="package-badge">POPULAR</div>
             <div class="package-header">
                 <h3 style="color: #9400d3;">DANADINHA</h3>
-                <div class="package-price" style="color: #9400d3;">R$ 99,90</div>
+                <div class="package-price" style="color: #9400d3;">R$ 39,99</div>
                 <small>experiência completa</small>
             </div>
             <ul class="package-benefits">
@@ -1199,7 +1199,7 @@ class NewPages:
         <div class="package-box package-safadinha">
             <div class="package-header">
                 <h3 style="color: #ff0066;">SAFADINHA</h3>
-                <div class="package-price" style="color: #ff0066;">R$ 199,90</div>
+                <div class="package-price" style="color: #ff0066;">R$ 69,99</div>
                 <small>para verdadeiros fãs</small>
             </div>
             <ul class="package-benefits">
@@ -1236,8 +1236,8 @@ class NewPages:
         st.markdown("""
         <div class="package-box package-diabinha">
             <div class="package-header">
-                <h3 style="color: #ff0000;">DIABINHA SECRETO</h3>
-                <div class="package-price" style="color: #ff0000;">R$ 299,90</div>
+                <h3 style="color: #ff0000;">DIABINHA+SECRETO</h3>
+                <div class="package-price" style="color: #ff0000;">R$ 99,90</div>
                 <small>conteúdo ultra exclusivo</small>
             </div>
             <ul class="package-benefits">
