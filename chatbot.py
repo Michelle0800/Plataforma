@@ -634,7 +634,7 @@ class UiService:
         st.markdown('<div class="button-container">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            if st.button("Confirmo que sou maior de 18 anos", 
+            if st.button("✅Confirmo que sou maior de 18 anos", 
                         key="age_checkbox",
                         use_container_width=True,
                         type="primary"):
