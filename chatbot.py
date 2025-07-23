@@ -576,12 +576,6 @@ class UiService:
     @staticmethod
     def age_verification():
         st.markdown("""
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h1>💋Michelle - Conteúdo Secreto</h1>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
         <style>
             .age-verification {
                 max-width: 600px;
@@ -592,6 +586,7 @@ class UiService:
                 box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
                 border: 1px solid rgba(255, 102, 179, 0.2);
                 color: white;
+                margin-bottom: 30px;
             }
             .age-header {
                 display: flex;
@@ -608,6 +603,10 @@ class UiService:
                 font-weight: 700;
                 margin: 0;
                 color: #ff66b3;
+            }
+            .button-container {
+                margin-top: 30px;
+                text-align: center;
             }
         </style>
         """, unsafe_allow_html=True)
@@ -626,6 +625,7 @@ class UiService:
             </div>
             """, unsafe_allow_html=True)
 
+        st.markdown('<div class="button-container">', unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
             if st.button("Confirmo que sou maior de 18 anos", 
@@ -635,6 +635,7 @@ class UiService:
                 st.session_state.age_verified = True
                 save_persistent_data()
                 st.rerun()
+        st.markdown('</div>', unsafe_allow_html=True)
 
     @staticmethod
     def setup_sidebar():
