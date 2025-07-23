@@ -10,7 +10,6 @@ import sqlite3
 import re
 import os
 import uuid
-import hashlib
 from datetime import datetime
 from pathlib import Path
 from functools import lru_cache
@@ -19,7 +18,7 @@ from functools import lru_cache
 # CONFIGURAÇÃO INICIAL DO STREAMLIT
 # ======================
 st.set_page_config(
-    page_title="Michelle Souza",
+    page_title="Paloma Premium",
     page_icon="💋",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -75,26 +74,29 @@ st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # CONSTANTES E CONFIGURAÇÕES
 # ======================
 class Config:
-    API_KEY = "AIzaSyDDb7Bkt-zkmo9U82WCnaWXAv_GdnKpg-M"
+    API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
-    CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
-    CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
-    CHECKOUT_SAFADINHA = "https://pay.risepay.com.br/Pay/34c9d16d06564192ab9bfef998088f01"
-    CHECKOUT_DIABINHA_SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
+    VIP_LINK = "https://exemplo.com/vip"
+    CHECKOUT_START = "https://checkout.exemplo.com/start"
+    CHECKOUT_PREMIUM = "https://checkout.exemplo.com/premium"
+    CHECKOUT_EXTREME = "https://checkout.exemplo.com/extreme"
+    CHECKOUT_VIP_1MES = "https://checkout.exemplo.com/vip-1mes"
+    CHECKOUT_VIP_3MESES = "https://checkout.exemplo.com/vip-3meses"
+    CHECKOUT_VIP_1ANO = "https://checkout.exemplo.com/vip-1ano"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
-    AUDIO_FILE = "https://github.com/Michelle0800/Plataforma/raw/refs/heads/main/assets/assets_audio_paloma_audio.mp3"
+    AUDIO_FILE = "https://github.com/gustapb77/ChatBotHot/raw/refs/heads/main/assets/audio/paloma_audio.mp3"
     AUDIO_DURATION = 7
-    IMG_PROFILE = "https://i.ibb.co/602BSXNB/IMG-20241114-114311-521.jpg"
+    IMG_PROFILE = "https://i.ibb.co/ks5CNrDn/IMG-9256.jpg"
     IMG_GALLERY = [
-        "https://i.ibb.co/rGZYzWFq/FOTO.jpg",
-        "https://i.ibb.co/3ywqK8Sp/3076512347-jpg-1735240788632.jpg",
-        "https://i.ibb.co/0yCthpzf/2537946408-2024-12-22-10-03-06.jpg"
+        "https://i.ibb.co/zhNZL4FF/IMG-9198.jpg",
+        "https://i.ibb.co/Y4B7CbXf/IMG-9202.jpg",
+        "https://i.ibb.co/Fqf0gPPq/IMG-9199.jpg"
     ]
     IMG_HOME_PREVIEWS = [
-        "https://i.ibb.co/WNmf5LB9/FOTO.jpg",
-        "https://i.ibb.co/3yTRfgQt/In-Shot-20241207-113653997.jpg",
-        "https://i.ibb.co/qLPRzq4Z/3596761747-jpg-1735490654365.jpg"
+        "https://i.ibb.co/k2MJg4XC/Save-ClipApp-412457343-378531441368078-7870326395110089440-n.jpg",
+        "https://i.ibb.co/MxqKBk1X/Save-ClipApp-481825770-18486618637042608-2702272791254832108-n.jpg",
+        "https://i.ibb.co/F4CkkYTL/Save-ClipApp-461241348-1219420546053727-2357827070610318448-n.jpg"
     ]
     LOGO_URL = "https://i.ibb.co/LX7x3tcB/Logo-Golden-Pepper-Letreiro-1.png"
 
@@ -165,7 +167,7 @@ def save_persistent_data():
         'age_verified', 'messages', 'request_count',
         'connection_complete', 'chat_started', 'audio_sent',
         'current_page', 'show_vip_offer', 'session_id',
-        'last_cta_time', 'api_usage'
+        'last_cta_time'  # Novo campo adicionado
     ]
     
     new_data = {key: st.session_state.get(key) for key in persistent_keys if key in st.session_state}
@@ -178,8 +180,8 @@ def save_persistent_data():
 # MODELOS DE DADOS
 # ======================
 class Persona:
-    Michelle = """
-    [PERFIL Michelle]
+    PALOMA = """
+    [PERFIL PALOMA]
     - Mulher vulgar e safada que adora provocar
     - Linguagem direta e cheia de malícia
     - Frases curtas e sem pontuação perfeita
@@ -194,7 +196,7 @@ class Persona:
     1. Quando o histórico mostra clima sexual:
     Histórico:
     Cliente: sua buceta é rosinha?
-    Michelle: adoro mostrar ela aberta
+    Paloma: adoro mostrar ela aberta
     Cliente: quero ver
     Resposta: ```json
     {
@@ -224,7 +226,7 @@ class Persona:
     3. Quando o contexto não justifica CTA:
     Histórico:
     Cliente: oi
-    Michelle: oi gato
+    Paloma: oi gato
     Resposta: ```json
     {
       "text": "eai gostoso",
@@ -232,8 +234,8 @@ class Persona:
         "show": false
       }
     }
+    ```
     """
-    # Removido o fechamento extra de docstring que causava o erro
 
 class CTAEngine:
     @staticmethod
@@ -365,137 +367,68 @@ class DatabaseService:
         return [{"role": row[0], "content": row[1]} for row in c.fetchall()]
 
 # ======================
-# GERENCIAMENTO DE TAXA DE REQUISIÇÕES
-# ======================
-class RateLimiter:
-    _last_request_time = 0
-    MIN_INTERVAL = 1.0  # Segundos entre requisições
-    
-    @classmethod
-    def wait_if_needed(cls):
-        elapsed = time.time() - cls._last_request_time
-        if elapsed < cls.MIN_INTERVAL:
-            time.sleep(cls.MIN_INTERVAL - elapsed)
-        cls._last_request_time = time.time()
-
-# ======================
 # SERVIÇOS DE API
 # ======================
 class ApiService:
     @staticmethod
     @lru_cache(maxsize=100)
     def ask_gemini(prompt: str, session_id: str, conn) -> dict:
-        # Cria uma chave de cache única baseada no prompt e histórico
-        cache_key = hashlib.md5(
-            (prompt + session_id + json.dumps(st.session_state.messages[-3:])).encode()
-        ).hexdigest()
-        
-        RateLimiter.wait_if_needed()
-        
-        if not ApiService.check_api_status():
-            return CTAEngine.generate_response(prompt)
+        if any(word in prompt.lower() for word in ["vip", "quanto custa", "comprar", "assinar"]):
+            return ApiService._call_gemini_api(prompt, session_id, conn)
         
         return ApiService._call_gemini_api(prompt, session_id, conn)
 
     @staticmethod
-    def check_api_status():
-        try:
-            # Verificação simples de saúde da API
-            health_check = requests.get(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro",
-                params={"key": Config.API_KEY},
-                timeout=5
-            )
-            return health_check.status_code == 200
-        except:
-            return False
-
-    @staticmethod
-    def _call_gemini_api(prompt: str, session_id: str, conn, max_retries=3) -> dict:
-        retry_delays = [2, 5, 10]  # Delays em segundos para cada tentativa
-        last_error = None
+    def _call_gemini_api(prompt: str, session_id: str, conn) -> dict:
+        delay_time = random.uniform(3, 8)
+        time.sleep(delay_time)
         
-        # Inicializa estatísticas de uso da API
-        if 'api_usage' not in st.session_state:
-            st.session_state.api_usage = {
-                'success': 1,  # Inicia com 1 para mostrar que está funcionando
-                'last_request': datetime.now().strftime("%H:%M:%S")
-            }
+        status_container = st.empty()
+        UiService.show_status_effect(status_container, "viewed")
+        UiService.show_status_effect(status_container, "typing")
         
-        for attempt in range(max_retries):
-            try:
-                # Delay aleatório entre requisições (3-8 segundos)
-                delay_time = random.uniform(3, 8)
-                time.sleep(delay_time)
-                
-                status_container = st.empty()
-                UiService.show_status_effect(status_container, "viewed")
-                UiService.show_status_effect(status_container, "typing")
-                
-                conversation_history = ChatService.format_conversation_history(st.session_state.messages)
-                
-                headers = {'Content-Type': 'application/json'}
-                data = {
-                    "contents": [
-                        {
-                            "role": "user",
-                            "parts": [{"text": f"{Persona.Michelle}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]}
-                    ],
-                    "generationConfig": {
-                        "temperature": 0.9,
-                        "topP": 0.8,
-                        "topK": 40
-                    }
+        conversation_history = ChatService.format_conversation_history(st.session_state.messages)
+        
+        headers = {'Content-Type': 'application/json'}
+        data = {
+            "contents": [
+                {
+                    "role": "user",
+                    "parts": [{"text": f"{Persona.PALOMA}\n\nHistórico da Conversa:\n{conversation_history}\n\nÚltima mensagem do cliente: '{prompt}'\n\nResponda em JSON com o formato:\n{{\n  \"text\": \"sua resposta\",\n  \"cta\": {{\n    \"show\": true/false,\n    \"label\": \"texto do botão\",\n    \"target\": \"página\"\n  }}\n}}"}]
                 }
-                
-                response = requests.post(
-                    Config.API_URL, 
-                    headers=headers, 
-                    json=data, 
-                    timeout=Config.REQUEST_TIMEOUT
-                )
-                
-                # Verifica códigos de status HTTP
-                if response.status_code == 503:
-                    raise requests.exceptions.HTTPError("Serviço temporariamente indisponível", response=response)
-                
-                response.raise_for_status()  # Lança exceção para outros códigos 4xx/5xx
-                
-                gemini_response = response.json().get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
-                
-                try:
-                    if '```json' in gemini_response:
-                        resposta = json.loads(gemini_response.split('```json')[1].split('```')[0].strip())
-                    else:
-                        resposta = json.loads(gemini_response)
-                    
-                    if resposta.get("cta", {}).get("show"):
-                        if not CTAEngine.should_show_cta(st.session_state.messages):
-                            resposta["cta"]["show"] = False
-                        else:
-                            st.session_state.last_cta_time = time.time()
-                    
-                    # Atualiza estatísticas de sucesso
-                    st.session_state.api_usage['success'] += 1
-                    st.session_state.api_usage['last_request'] = datetime.now().strftime("%H:%M:%S")
-                    return resposta
-                
-                except json.JSONDecodeError:
-                    st.session_state.api_usage['success'] += 1
-                    st.session_state.api_usage['last_request'] = datetime.now().strftime("%H:%M:%S")
-                    return {"text": gemini_response, "cta": {"show": False}}
-                    
-            except requests.exceptions.RequestException as e:
-                last_error = e
-                if attempt < max_retries - 1:  # Não esperar na última tentativa
-                    time.sleep(retry_delays[attempt])
-                continue
-            except Exception as e:
-                last_error = e
-                break
+            ],
+            "generationConfig": {
+                "temperature": 0.9,
+                "topP": 0.8,
+                "topK": 40
+            }
+        }
         
-        # Se todas as tentativas falharem
-        return CTAEngine.generate_response(prompt)
+        try:
+            response = requests.post(Config.API_URL, headers=headers, json=data, timeout=Config.REQUEST_TIMEOUT)
+            response.raise_for_status()
+            gemini_response = response.json().get("candidates", [{}])[0].get("content", {}).get("parts", [{}])[0].get("text", "")
+            
+            try:
+                if '```json' in gemini_response:
+                    resposta = json.loads(gemini_response.split('```json')[1].split('```')[0].strip())
+                else:
+                    resposta = json.loads(gemini_response)
+                
+                if resposta.get("cta", {}).get("show"):
+                    if not CTAEngine.should_show_cta(st.session_state.messages):
+                        resposta["cta"]["show"] = False
+                    else:
+                        st.session_state.last_cta_time = time.time()  # Registrar quando CTA foi mostrado
+                
+                return resposta
+            
+            except json.JSONDecodeError:
+                return {"text": gemini_response, "cta": {"show": False}}
+                
+        except Exception as e:
+            st.error(f"Erro na API: {str(e)}")
+            return {"text": "Vamos continuar isso mais tarde...", "cta": {"show": False}}
 
 # ======================
 # SERVIÇOS DE INTERFACE
@@ -536,7 +469,7 @@ class UiService:
             animation: pulse-ring 2s infinite;
         ">
             <div style="font-size: 3rem;">📱</div>
-            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Michelle...</h3>
+            <h3 style="color: #ff66b3; margin-bottom: 5px;">Ligando para Paloma...</h3>
             <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 15px;">
                 <div style="width: 10px; height: 10px; background: #4CAF50; border-radius: 50%;"></div>
                 <span style="font-size: 0.9rem;">Online agora</span>
@@ -566,7 +499,7 @@ class UiService:
         ">
             <div style="font-size: 3rem; color: #4CAF50;">✓</div>
             <h3 style="color: #4CAF50; margin-bottom: 5px;">Chamada atendida!</h3>
-            <p style="font-size: 0.9rem; margin:0;">Michelle está te esperando...</p>
+            <p style="font-size: 0.9rem; margin:0;">Paloma está te esperando...</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -728,6 +661,14 @@ class UiService:
                     height: 80px;
                     object-fit: cover;
                 }
+                .vip-badge {
+                    background: linear-gradient(45deg, #ff1493, #9400d3);
+                    padding: 15px;
+                    border-radius: 8px;
+                    color: white;
+                    text-align: center;
+                    margin: 10px 0;
+                }
                 .menu-item {
                     transition: all 0.3s;
                     padding: 10px;
@@ -754,6 +695,7 @@ class UiService:
                 .sidebar-logo-container {
                     position: relative;
                     z-index: 1;
+                }
             </style>
             """, unsafe_allow_html=True)
             
@@ -765,8 +707,8 @@ class UiService:
             
             st.markdown("""
             <div class="sidebar-header">
-                <img src="{profile_img}" alt="Michelle">
-                <h3 style="color: #ff66b3; margin-top: 10px;">Michelle Souza</h3>
+                <img src="{profile_img}" alt="Paloma">
+                <h3 style="color: #ff66b3; margin-top: 10px;">Paloma Premium</h3>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
             
@@ -776,6 +718,7 @@ class UiService:
             menu_options = {
                 "Início": "home",
                 "Galeria Privada": "gallery",
+                "Mensagens": "messages",
                 "Ofertas Especiais": "offers"
             }
             
@@ -788,9 +731,38 @@ class UiService:
                         st.rerun()
             
             st.markdown("---")
+            st.markdown("### Sua Conta")
+            
+            st.markdown("""
+            <div style="
+                background: rgba(255, 20, 147, 0.1);
+                padding: 10px;
+                border-radius: 8px;
+                text-align: center;
+            ">
+                <p style="margin:0;">Acesse conteúdo exclusivo</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown("---")
+            st.markdown("### Upgrade VIP")
+            st.markdown("""
+            <div class="vip-badge">
+                <p style="margin: 0 0 10px; font-weight: bold;">Acesso completo por apenas</p>
+                <p style="margin: 0; font-size: 1.5em; font-weight: bold;">R$ 29,90/mês</p>
+                <p style="margin: 10px 0 0; font-size: 0.8em;">Cancele quando quiser</p>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("Tornar-se VIP", use_container_width=True, type="primary"):
+                st.session_state.current_page = "offers"
+                save_persistent_data()
+                st.rerun()
+            
+            st.markdown("---")
             st.markdown("""
             <div style="text-align: center; font-size: 0.7em; color: #888;">
-                <p>© 2024 Michelle Souza</p>
+                <p>© 2024 Paloma Premium</p>
                 <p>Conteúdo para maiores de 18 anos</p>
             </div>
             """, unsafe_allow_html=True)
@@ -850,7 +822,7 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
-        cols = st.columns(3)
+        cols = st.columns(4)
         with cols[0]:
             if st.button("Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
@@ -870,6 +842,13 @@ class UiService:
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
+                save_persistent_data()
+                st.rerun()
+        with cols[3]:
+            if st.button("VIP", key="shortcut_vip",
+                       help="Acessar área VIP",
+                       use_container_width=True):
+                st.session_state.current_page = "vip"
                 save_persistent_data()
                 st.rerun()
 
@@ -917,13 +896,6 @@ class UiService:
             audio::-webkit-media-controls-panel {
                 background: linear-gradient(45deg, #ff66b3, #ff1493) !important;
             }
-            .api-status {
-                background: rgba(255, 255, 255, 0.1);
-                padding: 10px;
-                border-radius: 8px;
-                margin-bottom: 15px;
-                text-align: center;
-            }
         </style>
         """, unsafe_allow_html=True)
         
@@ -931,22 +903,24 @@ class UiService:
         
         st.markdown(f"""
         <div class="chat-header">
-            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>
+            <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Paloma</h2>
         </div>
         """, unsafe_allow_html=True)
         
-        # Mostrar status simplificado da API
-        if 'api_usage' in st.session_state:
-            st.markdown(f"""
-            <div class="api-status">
-                <p style="margin:0; font-size:0.9em;">
-                    Chamadas realizadas: <strong>{st.session_state.api_usage['success']}</strong>
-                </p>
-                <p style="margin:0; font-size:0.7em; color: #aaa;">
-                    Última: {st.session_state.api_usage['last_request']}
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.sidebar.markdown(f"""
+        <div style="
+            background: rgba(255, 20, 147, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        ">
+            <p style="margin:0; font-size:0.9em;">
+                Mensagens hoje: <strong>{st.session_state.request_count}/{Config.MAX_REQUESTS_PER_SESSION}</strong>
+            </p>
+            <progress value="{st.session_state.request_count}" max="{Config.MAX_REQUESTS_PER_SESSION}" style="width:100%; height:6px;"></progress>
+        </div>
+        """, unsafe_allow_html=True)
         
         ChatService.process_user_input(conn)
         save_persistent_data()
@@ -993,7 +967,7 @@ class NewPages:
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Michelle Souza</h1>
+            <h1 style="color: #ff66b3;">Paloma Premium</h1>
             <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             <div style="margin-top: 20px;">
                 <a href="#vip" style="
@@ -1141,7 +1115,7 @@ class NewPages:
         st.markdown("""
         <div class="package-box package-start">
             <div class="package-header">
-                <h3 style="color: #ff66b3;">Pacote Santinha</h3>
+                <h3 style="color: #ff66b3;">START</h3>
                 <div class="package-price" style="color: #ff66b3;">R$ 49,90</div>
                 <small>para iniciantes</small>
             </div>
@@ -1155,7 +1129,7 @@ class NewPages:
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
                 <a href="{checkout_start}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
-                    background: linear-gradient(45deg, #ff1493, #9400d3);
+                    background: linear-gradient(45deg, #ff66b3, #ff1493);
                     color: white;
                     text-align: center;
                     padding: 10px;
@@ -1170,13 +1144,13 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_start=Config.CHECKOUT_SANTINHA), unsafe_allow_html=True)
+        """.format(checkout_start=Config.CHECKOUT_START), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-premium">
             <div class="package-badge">POPULAR</div>
             <div class="package-header">
-                <h3 style="color: #9400d3;">Pacote Danadinha</h3>
+                <h3 style="color: #9400d3;">PREMIUM</h3>
                 <div class="package-price" style="color: #9400d3;">R$ 99,90</div>
                 <small>experiência completa</small>
             </div>
@@ -1207,12 +1181,12 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_premium=Config.CHECKOUT_DANADINHA), unsafe_allow_html=True)
+        """.format(checkout_premium=Config.CHECKOUT_PREMIUM), unsafe_allow_html=True)
 
         st.markdown("""
         <div class="package-box package-extreme">
             <div class="package-header">
-                <h3 style="color: #ff0066;">Pacote Safadinha</h3>
+                <h3 style="color: #ff0066;">EXTREME</h3>
                 <div class="package-price" style="color: #ff0066;">R$ 199,90</div>
                 <small>para verdadeiros fãs</small>
             </div>
@@ -1245,46 +1219,7 @@ class NewPages:
                 </a>
             </div>
         </div>
-        """.format(checkout_extreme=Config.CHECKOUT_SAFADINHA), unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="package-box package-extreme" style="border-color: #9400d3; margin-top: 20px;">
-            <div class="package-badge" style="background: #9400d3;">NOVO</div>
-            <div class="package-header">
-                <h3 style="color: #9400d3;">Pacote Diabinha + Secreto</h3>
-                <div class="package-price" style="color: #9400d3;">R$ 249,90</div>
-                <small>conteúdos ultra exclusivos</small>
-            </div>
-            <ul class="package-benefits">
-                <li>50 fotos ultra-exclusivas</li>
-                <li>15 vídeos premium</li>
-                <li>Fotos e vídeos caseiros</li>
-                <li>Conteúdo Secreto</li>
-                <li>Vídeos longos</li>
-                <li>Ensaio nu completo</li>
-                <li>Vídeos de dupla penetração</li>
-                <li>Conteúdo personalizado</li>
-                <li>Acesso vitalício</li>
-            </ul>
-            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
-                <a href="{checkout_secreto}" target="_blank" rel="noopener noreferrer" style="
-                    display: block;
-                    background: linear-gradient(45deg, #9400d3, #ff1493);
-                    color: white;
-                    text-align: center;
-                    padding: 10px;
-                    border-radius: 8px;
-                    text-decoration: none;
-                    font-weight: bold;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='scale(1.05)'" 
-                onmouseout="this.style.transform='scale(1)'"
-                onclick="this.innerHTML='REDIRECIONANDO ⌛'; this.style.opacity='0.7'">
-                    QUERO ESTE PACOTE ➔
-                </a>
-            </div>
-        </div>
-        """.format(checkout_secreto=Config.CHECKOUT_DIABINHA_SECRETO), unsafe_allow_html=True)
+        """.format(checkout_extreme=Config.CHECKOUT_EXTREME), unsafe_allow_html=True)
 
         st.markdown('</div>', unsafe_allow_html=True)
 
@@ -1322,6 +1257,64 @@ class NewPages:
         </script>
         """, height=0)
 
+        plans = [
+            {
+                "name": "1 Mês",
+                "price": "R$ 29,90",
+                "original": "R$ 49,90",
+                "benefits": ["Acesso total", "Conteúdo novo diário", "Chat privado"],
+                "tag": "COMUM",
+                "link": Config.CHECKOUT_VIP_1MES + "?plan=1mes"
+            },
+            {
+                "name": "3 Meses",
+                "price": "R$ 69,90",
+                "original": "R$ 149,70",
+                "benefits": ["25% de desconto", "Bônus: 1 vídeo exclusivo", "Prioridade no chat"],
+                "tag": "MAIS POPULAR",
+                "link": Config.CHECKOUT_VIP_3MESES + "?plan=3meses"
+            },
+            {
+                "name": "1 Ano",
+                "price": "R$ 199,90",
+                "original": "R$ 598,80",
+                "benefits": ["66% de desconto", "Presente surpresa mensal", "Acesso a conteúdos raros"],
+                "tag": "MELHOR CUSTO-BENEFÍCIO",
+                "link": Config.CHECKOUT_VIP_1ANO + "?plan=1ano"
+            }
+        ]
+
+        for plan in plans:
+            with st.container():
+                st.markdown(f"""
+                <div class="offer-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3>{plan['name']}</h3>
+                        {f'<span class="offer-highlight">{plan["tag"]}</span>' if plan["tag"] else ''}
+                    </div>
+                    <div style="margin: 10px 0;">
+                        <span style="font-size: 1.8em; color: #ff66b3; font-weight: bold;">{plan['price']}</span>
+                        <span style="text-decoration: line-through; color: #888; margin-left: 10px;">{plan['original']}</span>
+                    </div>
+                    <ul style="padding-left: 20px;">
+                        {''.join([f'<li style="margin-bottom: 5px;">{benefit}</li>' for benefit in plan['benefits']])}
+                    </ul>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="{plan['link']}" style="
+                            background: linear-gradient(45deg, #ff1493, #9400d3);
+                            color: white;
+                            padding: 10px 20px;
+                            border-radius: 30px;
+                            text-decoration: none;
+                            display: inline-block;
+                            font-weight: bold;
+                        ">
+                            Assinar {plan['name']}
+                        </a>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
         if st.button("Voltar ao chat", key="back_from_offers"):
             st.session_state.current_page = "chat"
             save_persistent_data()
@@ -1329,7 +1322,7 @@ class NewPages:
 
 # ======================
 # SERVIÇOS DE CHAT
-# ====================== 
+# ======================
 class ChatService:
     @staticmethod
     def initialize_session(conn):
@@ -1358,11 +1351,7 @@ class ChatService:
             'audio_sent': False,
             'current_page': 'home',
             'show_vip_offer': False,
-            'last_cta_time': 0,
-            'api_usage': {
-                'success': 1,  # Inicia com 1 para mostrar que está funcionando
-                'last_request': datetime.now().strftime("%H:%M:%S")
-            }
+            'last_cta_time': 0  # Novo campo adicionado
         }
         
         for key, default in defaults.items():
@@ -1374,7 +1363,7 @@ class ChatService:
         formatted = []
         
         for msg in messages[-max_messages:]:
-            role = "Cliente" if msg["role"] == "user" else "Michelle"
+            role = "Cliente" if msg["role"] == "user" else "Paloma"
             content = msg["content"]
             if content == "[ÁUDIO]":
                 content = "[Enviou um áudio sensual]"
@@ -1429,7 +1418,7 @@ class ChatService:
                                 if content_data.get("cta", {}).get("show") and idx == len(st.session_state.messages[-12:]) - 1:
                                     if st.button(
                                         content_data.get("cta", {}).get("label", "Ver Ofertas"),
-                                        key=f"cta_button_{hash(msg['content'])}",
+                                        key=f"cta_button_{hash(msg['content'])}",  # Chave única baseada no conteúdo
                                         use_container_width=True
                                     ):
                                         st.session_state.current_page = content_data.get("cta", {}).get("target", "offers")
@@ -1653,7 +1642,7 @@ def main():
             st.markdown("""
             <div style="text-align: center; margin: 50px 0;">
                 <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
-                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle Souza</h2>
+                <h2 style="color: #ff66b3; margin-top: 15px;">Paloma</h2>
                 <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
             </div>
             """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
