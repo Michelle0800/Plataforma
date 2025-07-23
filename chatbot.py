@@ -654,7 +654,7 @@ class UiService:
         # Botão centralizado abaixo do container
         col1, col2, col3 = st.columns([1,2,1])
         with col2:
-            if st.button("Confirmo que sou maior de 18 anos", 
+            if st.button("✅Confirmo que sou maior de 18 anos", 
                         key="age_checkbox",
                         use_container_width=True,
                         type="primary"):
