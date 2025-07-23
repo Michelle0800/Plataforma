@@ -576,10 +576,16 @@ class UiService:
     @staticmethod
     def age_verification():
         st.markdown("""
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h1>💋Michelle - Conteúdo Secreto</h1>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("""
         <style>
             .age-verification {
                 max-width: 600px;
-                margin: 2rem auto;
+                margin: 0 auto;
                 padding: 2rem;
                 background: linear-gradient(145deg, #1e0033, #3c0066);
                 border-radius: 15px;
