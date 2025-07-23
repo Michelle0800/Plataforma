@@ -77,10 +77,10 @@ class Config:
     API_KEY = "AIzaSyDTaYm2KHHnVPdWy4l5pEaGPM7QR0g3IPc"
     API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
     VIP_LINK = "https://exemplo.com/vip"
-    CHECKOUT_SANTINHA = "https://checkout.exemplo.com/santinha"
-    CHECKOUT_DANADINHA = "https://checkout.exemplo.com/danadinha"
-    CHECKOUT_SAFADINHA = "https://checkout.exemplo.com/safadinha"
-    CHECKOUT_DIABINHA_SECRETO = "https://checkout.exemplo.com/diabinha-secreto"
+    CHECKOUT_SANTINHA = "https://pay.risepay.com.br/Pay/7702bce4ae0c4bd0944348c2a002c74c"
+    CHECKOUT_DANADINHA = "https://pay.risepay.com.br/Pay/cbe91d9cd08d438ab61c361412db25e5"
+    CHECKOUT_SAFADINHA = "https://pay.risepay.com.br/Pay/34c9d16d06564192ab9bfef998088f01"
+    CHECKOUT_DIABINHA_SECRETO = "https://pay.risepay.com.br/Pay/55cb507eb0de4cc88ea011ba84fea3f0"
     MAX_REQUESTS_PER_SESSION = 30
     REQUEST_TIMEOUT = 30
     AUDIO_FILE = "https://github.com/gustapb77/ChatBotHot/raw/refs/heads/main/assets/audio/paloma_audio.mp3"
