@@ -577,73 +577,103 @@ class UiService:
     def age_verification():
         st.markdown("""
         <style>
-            .age-verification {
-                max-width: 600px;
-                margin: 2rem auto;
-                padding: 2rem;
-                background: #000000;
-                border-radius: 15px;
-                box-shadow: 0 8px 32px rgba(255, 102, 179, 0.3);
-                border: 1px solid #ff66b3;
-                color: white;
+            .age-verification-title {
                 text-align: center;
+                font-size: 2.5rem;
+                margin-bottom: 1rem;
+                color: #ff1493;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            }
+            .age-verification-container {
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 2rem;
+                background: linear-gradient(to bottom, #ffffff, #f0f0f0, #1e0033);
+                border-radius: 15px;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                border: 1px solid rgba(255, 102, 179, 0.5);
+                color: #333;
+            }
+            .age-header {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 1.5rem;
+                justify-content: center;
+            }
+            .age-icon {
+                font-size: 2.5rem;
+                color: #ff1493;
             }
             .age-title {
                 font-size: 1.8rem;
                 font-weight: 700;
+                margin: 0;
+                color: #ff1493;
+            }
+            .age-content {
+                margin-bottom: 2rem;
+                text-align: center;
+            }
+            .age-content p {
                 margin-bottom: 1rem;
-                color: #ff66b3;
-                text-shadow: 0 0 10px rgba(255, 102, 179, 0.5);
+                color: #333;
             }
-            .age-divider {
-                border: none;
-                height: 1px;
-                background: linear-gradient(90deg, transparent, #ff66b3, transparent);
-                margin: 1.5rem 0;
-            }
-            .age-button {
+            .stButton>button {
                 background: linear-gradient(45deg, #ff1493, #9400d3) !important;
                 color: white !important;
                 border: none !important;
-                border-radius: 20px !important;
+                border-radius: 30px !important;
                 padding: 12px 24px !important;
+                font-size: 1rem !important;
                 font-weight: bold !important;
                 transition: all 0.3s !important;
-                box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4) !important;
-                margin-top: 1rem;
-                font-size: 1rem;
-            }
-            .age-button:hover {
-                transform: translateY(-2px) !important;
-                box-shadow: 0 6px 20px rgba(255, 20, 147, 0.6) !important;
-            }
-            .stButton>button {
+                box-shadow: 0 4px 15px rgba(148, 0, 211, 0.3) !important;
                 width: 100%;
+            }
+            .stButton>button:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(148, 0, 211, 0.4) !important;
+            }
+            @media (max-width: 768px) {
+                .age-verification-title {
+                    font-size: 2rem;
+                }
+                .age-verification-container {
+                    padding: 1.5rem;
+                }
             }
         </style>
         """, unsafe_allow_html=True)
 
+        # Título centralizado acima do container
+        st.markdown('<h1 class="age-verification-title">💋Michelle - Conteúdo Secreto</h1>', unsafe_allow_html=True)
+        
+        # Container da verificação com gradiente branco para escuro
         with st.container():
             st.markdown("""
-            <div class="age-verification">
-                <h1 class="age-title">💋Michelle - Conteúdo Secreto</h1>
-                <h3>Verificação de Idade</h3>
-                <p>Este site contém material explícito destinado exclusivamente a adultos maiores de 18 anos.</p>
-                <p>Ao acessar este conteúdo, você declara estar em conformidade com todas as leis locais aplicáveis.</p>
-                <hr class="age-divider">
+            <div class="age-verification-container">
+                <div class="age-header">
+                    <div class="age-icon">🔞</div>
+                    <h1 class="age-title">Verificação de Idade</h1>
+                </div>
+                <div class="age-content">
+                    <p>Este site contém material adulto explícito destinado exclusivamente a maiores de 18 anos.</p>
+                    <p>Ao acessar, você confirma que possui idade legal para visualizar este tipo de conteúdo em sua jurisdição.</p>
+                    <p>Todos os conteúdos são protegidos por direitos autorais e seu acesso é restrito.</p>
+                </div>
             </div>
             """, unsafe_allow_html=True)
 
-            col1, col2, col3 = st.columns([1,2,1])
-            with col2:
-                if st.button("✅ Confirmo que sou maior de 18 anos", 
-                            key="age_checkbox",
-                            use_container_width=True,
-                            type="primary",
-                            help="Clique para confirmar que você é maior de 18 anos"):
-                    st.session_state.age_verified = True
-                    save_persistent_data()
-                    st.rerun()
+        # Botão centralizado abaixo do container
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            if st.button("CONFIRMO QUE SOU MAIOR DE 18 ANOS", 
+                        key="age_checkbox",
+                        use_container_width=True):
+                st.session_state.age_verified = True
+                save_persistent_data()
+                st.rerun()
 
     @staticmethod
     def setup_sidebar():
