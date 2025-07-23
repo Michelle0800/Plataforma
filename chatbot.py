@@ -583,34 +583,42 @@ class UiService:
                 padding: 2rem;
                 background: #000000;
                 border-radius: 15px;
-                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-                border: 1px solid rgba(255, 102, 179, 0.2);
+                box-shadow: 0 8px 32px rgba(255, 102, 179, 0.3);
+                border: 1px solid #ff66b3;
                 color: white;
-            }
-            .age-header {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 15px;
-                margin-bottom: 1.5rem;
-            }
-            .age-icon {
-                font-size: 2.5rem;
-                color: #ff66b3;
+                text-align: center;
             }
             .age-title {
                 font-size: 1.8rem;
                 font-weight: 700;
-                margin: 0;
+                margin-bottom: 1rem;
                 color: #ff66b3;
+                text-shadow: 0 0 10px rgba(255, 102, 179, 0.5);
             }
-            .stButton>button {
+            .age-divider {
+                border: none;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #ff66b3, transparent);
+                margin: 1.5rem 0;
+            }
+            .age-button {
                 background: linear-gradient(45deg, #ff1493, #9400d3) !important;
                 color: white !important;
                 border: none !important;
                 border-radius: 20px !important;
-                padding: 10px 24px !important;
+                padding: 12px 24px !important;
                 font-weight: bold !important;
+                transition: all 0.3s !important;
+                box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4) !important;
+                margin-top: 1rem;
+                font-size: 1rem;
+            }
+            .age-button:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(255, 20, 147, 0.6) !important;
+            }
+            .stButton>button {
+                width: 100%;
             }
         </style>
         """, unsafe_allow_html=True)
@@ -618,25 +626,24 @@ class UiService:
         with st.container():
             st.markdown("""
             <div class="age-verification">
-                <div class="age-header">
-                    <h1 class="age-title">💋Michelle - Conteúdo Secreto</h1>
-                </div>
-                <div class="age-content">
-                    <p>Este site contém material explícito destinado exclusivamente a adultos maiores de 18 anos.</p>
-                    <p>Ao acessar este conteúdo, você declara estar em conformidade com todas as leis locais aplicáveis.</p>
-                </div>
+                <h1 class="age-title">💋Michelle - Conteúdo Secreto</h1>
+                <h3>Verificação de Idade</h3>
+                <p>Este site contém material explícito destinado exclusivamente a adultos maiores de 18 anos.</p>
+                <p>Ao acessar este conteúdo, você declara estar em conformidade com todas as leis locais aplicáveis.</p>
+                <hr class="age-divider">
             </div>
             """, unsafe_allow_html=True)
 
-        col1, col2, col3 = st.columns([1,2,1])
-        with col2:
-            if st.button("✅ Confirmo que sou maior de 18 anos", 
-                        key="age_checkbox",
-                        use_container_width=True,
-                        type="primary"):
-                st.session_state.age_verified = True
-                save_persistent_data()
-                st.rerun()
+            col1, col2, col3 = st.columns([1,2,1])
+            with col2:
+                if st.button("✅ Confirmo que sou maior de 18 anos", 
+                            key="age_checkbox",
+                            use_container_width=True,
+                            type="primary",
+                            help="Clique para confirmar que você é maior de 18 anos"):
+                    st.session_state.age_verified = True
+                    save_persistent_data()
+                    st.rerun()
 
     @staticmethod
     def setup_sidebar():
