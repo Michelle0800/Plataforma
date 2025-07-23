@@ -924,38 +924,12 @@ class NewPages:
         <style>
             .hero-banner {
                 background: linear-gradient(135deg, #1e0033, #3c0066);
-                padding: 40px 20px;
+                padding: 80px 20px;
                 text-align: center;
                 border-radius: 15px;
                 color: white;
-                margin-bottom: 20px;
+                margin-bottom: 30px;
                 border: 2px solid #ff66b3;
-            }
-            .vip-btn {
-                background: #ff66b3;
-                color: white;
-                padding: 12px 30px;
-                border-radius: 30px;
-                text-decoration: none;
-                font-weight: bold;
-                display: inline-block;
-                margin: 20px auto 0;
-                transition: all 0.3s;
-                border: none;
-                cursor: pointer;
-                font-size: 1em;
-            }
-            .vip-btn:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 15px rgba(255,102,179,0.4);
-            }
-            .title {
-                color: #ff66b3;
-                margin-bottom: 10px;
-            }
-            .subtitle {
-                font-size: 1.1em;
-                margin-bottom: 20px;
             }
             .preview-img {
                 border-radius: 10px;
@@ -965,15 +939,55 @@ class NewPages:
             .preview-img:hover {
                 filter: blur(0) brightness(1);
             }
+            .intro-text {
+                font-size: 1.5em;
+                margin: 30px 0;
+                color: #ff66b3;
+                font-weight: bold;
+                text-align: center;
+                text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            }
+            .vip-btn {
+                background: #ff66b3;
+                color: white;
+                padding: 12px 30px;
+                border-radius: 30px;
+                text-decoration: none;
+                font-weight: bold;
+                display: inline-block;
+                margin: 20px auto;
+                transition: all 0.3s;
+                border: none;
+                cursor: pointer;
+            }
+            .vip-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(255,102,179,0.4);
+            }
         </style>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 class="title">Michelle Souza</h1>
-            <p class="subtitle">Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
-            
-            <button class="vip-btn" onclick="window.location.hash='offers'">Quero Acessar Tudo</button>
+            <h1 style="color: #ff66b3;">Michelle Souza</h1>
+            <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Botão centralizado abaixo da frase
+        col1, col2, col3 = st.columns([1,2,1])
+        with col2:
+            if st.button("Quero Acessar Tudo", 
+                        key="home_to_offers_btn",
+                        use_container_width=True,
+                        type="primary"):
+                st.session_state.current_page = "offers"
+                save_persistent_data()
+                st.rerun()
+
+        st.markdown("""
+        <div class="intro-text">
+            Prazer, Eu sou a Michelle!
         </div>
         """, unsafe_allow_html=True)
 
