@@ -924,28 +924,12 @@ class NewPages:
         <style>
             .hero-banner {
                 background: linear-gradient(135deg, #1e0033, #3c0066);
-                padding: 80px 20px;
+                padding: 40px 20px;
                 text-align: center;
                 border-radius: 15px;
                 color: white;
-                margin-bottom: 30px;
+                margin-bottom: 20px;
                 border: 2px solid #ff66b3;
-            }
-            .preview-img {
-                border-radius: 10px;
-                filter: blur(3px) brightness(0.7);
-                transition: all 0.3s;
-            }
-            .preview-img:hover {
-                filter: blur(0) brightness(1);
-            }
-            .intro-text {
-                font-size: 1.5em;
-                margin: 30px 0;
-                color: #ff66b3;
-                font-weight: bold;
-                text-align: center;
-                text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
             }
             .vip-btn {
                 background: #ff66b3;
@@ -955,30 +939,41 @@ class NewPages:
                 text-decoration: none;
                 font-weight: bold;
                 display: inline-block;
-                margin: 20px auto;
+                margin: 20px auto 0;
                 transition: all 0.3s;
                 border: none;
                 cursor: pointer;
+                font-size: 1em;
             }
             .vip-btn:hover {
                 transform: scale(1.05);
                 box-shadow: 0 5px 15px rgba(255,102,179,0.4);
+            }
+            .title {
+                color: #ff66b3;
+                margin-bottom: 10px;
+            }
+            .subtitle {
+                font-size: 1.1em;
+                margin-bottom: 20px;
+            }
+            .preview-img {
+                border-radius: 10px;
+                filter: blur(3px) brightness(0.7);
+                transition: all 0.3s;
+            }
+            .preview-img:hover {
+                filter: blur(0) brightness(1);
             }
         </style>
         """, unsafe_allow_html=True)
 
         st.markdown("""
         <div class="hero-banner">
-            <h1 style="color: #ff66b3;">Michelle Souza</h1>
-            <p>Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
+            <h1 class="title">Michelle Souza</h1>
+            <p class="subtitle">Conteúdo exclusivo que você não encontra em nenhum outro lugar...</p>
             
-            <div style="margin-top: 20px;">
-                <button class="vip-btn" onclick="window.location.hash='offers'">Quero Acessar Tudo</button>
-            </div>
-        </div>
-        
-        <div class="intro-text">
-            Prazer, Eu sou a Michelle!
+            <button class="vip-btn" onclick="window.location.hash='offers'">Quero Acessar Tudo</button>
         </div>
         """, unsafe_allow_html=True)
 
