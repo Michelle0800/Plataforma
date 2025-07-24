@@ -66,13 +66,6 @@ hide_streamlit_style = """
         margin: 0 !important;
         padding: 0 !important;
     }
-    /* Novas regras para remover o rodapé */
-    footer[data-testid="stFooter"] {
-        display: none !important;
-    }
-    .st-emotion-cache-cio0dv {
-        display: none !important;
-    }
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -806,48 +799,56 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
+        cols = st.columns(4)
+        with cols[0]:
+            if st.button("🏠Início", key="shortcut_home", 
+                       help="Voltar para a página inicial",
+                       use_container_width=True):
+                st.session_state.current_page = "home"
+                save_persistent_data()
+                st.rerun()
+        with cols[1]:
+            if st.button("📸Galeria", key="shortcut_gallery",
+                       help="Acessar galeria privada",
+                       use_container_width=True):
+                st.session_state.current_page = "gallery"
+                save_persistent_data()
+                st.rerun()
+        with cols[2]:
+            if st.button("🎁Ofertas", key="shortcut_offers",
+                       help="Ver ofertas especiais",
+                       use_container_width=True):
+                st.session_state.current_page = "offers"
+                save_persistent_data()
+                st.rerun()
+        with cols[3]:
+            if st.button("💬Chat", key="shortcut_chat",
+                       help="Voltar ao chat",
+                       use_container_width=True):
+                st.session_state.current_page = "chat"
+                save_persistent_data()
+                st.rerun()
+
         st.markdown("""
         <style>
-            .chat-shortcuts {
-                position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: rgba(30, 0, 51, 0.9);
-                padding: 10px;
-                z-index: 100;
-                border-top: 1px solid #ff66b3;
-                display: flex;
-                justify-content: space-around;
-            }
-            .shortcut-btn {
+            div[data-testid="stHorizontalBlock"] > div > div > button {
                 color: white !important;
                 border: 1px solid #ff66b3 !important;
                 background: rgba(255, 102, 179, 0.15) !important;
                 transition: all 0.3s !important;
                 font-size: 0.8rem !important;
-                margin: 0 2px !important;
-                flex: 1;
-                text-align: center;
-                padding: 8px 5px !important;
             }
-            .shortcut-btn:hover {
+            div[data-testid="stHorizontalBlock"] > div > div > button:hover {
                 transform: translateY(-2px) !important;
                 box-shadow: 0 2px 8px rgba(255, 102, 179, 0.3) !important;
             }
-            [data-testid="stVerticalBlock"] {
-                padding-bottom: 60px !important;
+            @media (max-width: 400px) {
+                div[data-testid="stHorizontalBlock"] > div > div > button {
+                    font-size: 0.7rem !important;
+                    padding: 6px 2px !important;
+                }
             }
         </style>
-        """, unsafe_allow_html=True)
-        
-        st.markdown("""
-        <div class="chat-shortcuts">
-            <button onclick="window.parent.location.href='?current_page=home'" class="shortcut-btn">🏠 Início</button>
-            <button onclick="window.parent.location.href='?current_page=gallery'" class="shortcut-btn">📸 Galeria</button>
-            <button onclick="window.parent.location.href='?current_page=offers'" class="shortcut-btn">🎁 Ofertas</button>
-            <button onclick="window.parent.location.href='?current_page=chat'" class="shortcut-btn">💬 Chat</button>
-        </div>
         """, unsafe_allow_html=True)
 
     @staticmethod
@@ -875,6 +876,8 @@ class UiService:
         </style>
         """, unsafe_allow_html=True)
         
+        UiService.chat_shortcuts()
+        
         st.markdown(f"""
         <div class="chat-header">
             <h2 style="margin:0; font-size:1.5em; display:inline-block;">Chat Privado com Michelle</h2>
@@ -898,9 +901,6 @@ class UiService:
         
         ChatService.process_user_input(conn)
         save_persistent_data()
-        
-        # Mostra os botões na parte inferior
-        UiService.chat_shortcuts()
         
         st.markdown("""
         <div style="
