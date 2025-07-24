@@ -1124,6 +1124,7 @@ class NewPages:
 
         st.markdown('<div class="package-container">', unsafe_allow_html=True)
         
+        # Pacote Santinha (atualizado)
         st.markdown("""
         <div class="package-box package-santinha">
             <div class="package-header">
@@ -1133,10 +1134,9 @@ class NewPages:
             </div>
             <ul class="package-benefits">
                 <li>10 fotos Inéditas</li>
-                <li>3 vídeo Intimos</li>
+                <li>2 vídeos Intimos</li>
                 <li>Fotos Exclusivas</li>
-                <li>Videos Intimos </li>
-                <li>Fotos Buceta</li>
+                <li>Videos Intimos</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
                 <a href="{checkout_santinha}" target="_blank" rel="noopener noreferrer" style="
@@ -1158,6 +1158,7 @@ class NewPages:
         </div>
         """.format(checkout_santinha=Config.CHECKOUT_SANTINHA), unsafe_allow_html=True)
 
+        # Pacote Danadinha (atualizado conforme solicitação)
         st.markdown("""
         <div class="package-box package-danadinha">
             <div class="package-badge">POPULAR</div>
@@ -1168,12 +1169,11 @@ class NewPages:
             </div>
             <ul class="package-benefits">
                 <li>20 fotos exclusivas</li>
-                <li>5 vídeos premium</li>
+                <li>4 vídeos premium</li>
                 <li>Fotos Peito</li>
                 <li>Fotos Bunda</li>
                 <li>Fotos Buceta</li>
                 <li>Fotos Exclusivas e Videos Exclusivos</li>
-                <li>Videos Masturbando</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
                 <a href="{checkout_danadinha}" target="_blank" rel="noopener noreferrer" style="
@@ -1195,6 +1195,7 @@ class NewPages:
         </div>
         """.format(checkout_danadinha=Config.CHECKOUT_DANADINHA), unsafe_allow_html=True)
 
+        # Pacote Safadinha (atualizado)
         st.markdown("""
         <div class="package-box package-safadinha">
             <div class="package-header">
@@ -1203,14 +1204,13 @@ class NewPages:
                 <small>para verdadeiros fãs</small>
             </div>
             <ul class="package-benefits">
-                <li>30 fotos ultra-exclusivas</li>
-                <li>10 Videos Exclusivos</li>
+                <li>36 fotos ultra-exclusivas</li>
+                <li>6 Videos Exclusivos</li>
                 <li>Fotos Peito</li>
                 <li>Fotos Bunda</li>
                 <li>Fotos Buceta</li>
                 <li>Fotos Exclusivas</li>
                 <li>Videos Masturbando</li>
-                <li>Videos Transando</li>
                 <li>Acesso a conteúdos futuros</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
@@ -1233,6 +1233,7 @@ class NewPages:
         </div>
         """.format(checkout_safadinha=Config.CHECKOUT_SAFADINHA), unsafe_allow_html=True)
 
+        # Pacote Diabinha+Secreto (atualizado)
         st.markdown("""
         <div class="package-box package-diabinha">
             <div class="package-header">
@@ -1241,10 +1242,15 @@ class NewPages:
                 <small>conteúdo ultra exclusivo</small>
             </div>
             <ul class="package-benefits">
-                <li>50 fotos ultra-raras</li>
-                <li>20 vídeos exclusivos</li>
-                <li>Conteúdo personalizado</li>
-                <li>Videochamada especial</li>
+                <li>64 fotos ultra-raras</li>
+                <li>10 vídeos exclusivos</li>
+                <li>Videos Secretos</li>
+                <li>Fotos Peito</li>
+                <li>Fotos Bunda</li>
+                <li>Fotos Buceta</li>
+                <li>Fotos Exclusivas</li>
+                <li>Videos Masturbando</li>
+                <li>Videos Transando</li>
                 <li>Acesso vitalício</li>
             </ul>
             <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
