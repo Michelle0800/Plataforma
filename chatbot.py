@@ -1017,13 +1017,12 @@ class NewPages:
         st.markdown("""
         <style>
             .package-container {
-                display: flex;
-                justify-content: space-between;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 25px;
                 margin: 30px 0;
-                gap: 20px;
             }
             .package-box {
-                flex: 1;
                 background: rgba(30, 0, 51, 0.3);
                 border-radius: 15px;
                 padding: 20px;
@@ -1031,7 +1030,8 @@ class NewPages:
                 transition: all 0.3s;
                 min-height: 400px;
                 position: relative;
-                overflow: hidden;
+                display: flex;
+                flex-direction: column;
             }
             .package-box:hover {
                 transform: translateY(-5px);
@@ -1063,6 +1063,7 @@ class NewPages:
             .package-benefits {
                 list-style-type: none;
                 padding: 0;
+                margin-bottom: 20px;
             }
             .package-benefits li {
                 padding: 8px 0;
@@ -1136,9 +1137,9 @@ class NewPages:
                 <li>10 fotos Inéditas</li>
                 <li>2 vídeos Intimos</li>
                 <li>Fotos Exclusivas</li>
-                <li>Videos Intimos</li>
+                <li>Videos Exclusivos</li>
             </ul>
-            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
+            <div style="margin-top: auto; padding-top: 15px;">
                 <a href="{checkout_santinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff66b3, #ff1493);
@@ -1158,7 +1159,7 @@ class NewPages:
         </div>
         """.format(checkout_santinha=Config.CHECKOUT_SANTINHA), unsafe_allow_html=True)
 
-        # Pacote Danadinha (atualizado conforme solicitação)
+        # Pacote Danadinha (atualizado)
         st.markdown("""
         <div class="package-box package-danadinha">
             <div class="package-badge">POPULAR</div>
@@ -1175,7 +1176,7 @@ class NewPages:
                 <li>Fotos Buceta</li>
                 <li>Fotos Exclusivas e Videos Exclusivos</li>
             </ul>
-            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
+            <div style="margin-top: auto; padding-top: 15px;">
                 <a href="{checkout_danadinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #9400d3, #ff1493);
@@ -1213,7 +1214,7 @@ class NewPages:
                 <li>Videos Masturbando</li>
                 <li>Acesso a conteúdos futuros</li>
             </ul>
-            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
+            <div style="margin-top: auto; padding-top: 15px;">
                 <a href="{checkout_safadinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff0066, #9400d3);
@@ -1253,7 +1254,7 @@ class NewPages:
                 <li>Videos Transando</li>
                 <li>Acesso vitalício</li>
             </ul>
-            <div style="position: absolute; bottom: 20px; width: calc(100% - 40px);">
+            <div style="margin-top: auto; padding-top: 15px;">
                 <a href="{checkout_diabinha}" target="_blank" rel="noopener noreferrer" style="
                     display: block;
                     background: linear-gradient(45deg, #ff0000, #9400d3);
