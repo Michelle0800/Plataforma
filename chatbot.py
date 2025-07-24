@@ -66,6 +66,13 @@ hide_streamlit_style = """
         margin: 0 !important;
         padding: 0 !important;
     }
+    /* Novas regras para remover o rodapé */
+    footer[data-testid="stFooter"] {
+        display: none !important;
+    }
+    .st-emotion-cache-cio0dv {
+        display: none !important;
+    }
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
