@@ -696,7 +696,8 @@ class UiService:
                 "💋Início": "home",
                 "🔥Galeria Privada": "gallery",
                 "💌Mensagens": "messages",
-                "🎁Ofertas Especiais": "offers"
+                "🎁Ofertas Especiais": "offers",
+                "💬Chat Privado": "chat"
             }
             
             for option, page in menu_options.items():
@@ -799,7 +800,7 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
-        cols = st.columns(4)
+        cols = st.columns(3)  # Alterado de 4 para 3 colunas
         with cols[0]:
             if st.button("🏠Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
@@ -819,13 +820,6 @@ class UiService:
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
-                save_persistent_data()
-                st.rerun()
-        with cols[3]:
-            if st.button("💬Chat", key="shortcut_chat",
-                       help="Voltar ao chat",
-                       use_container_width=True):
-                st.session_state.current_page = "chat"
                 save_persistent_data()
                 st.rerun()
 
