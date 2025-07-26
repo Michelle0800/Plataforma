@@ -66,38 +66,6 @@ hide_streamlit_style = """
         margin: 0 !important;
         padding: 0 !important;
     }
-    /* Input de mensagem ajustado */
-    [data-testid="stChatInput"] {
-        position: fixed;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        max-width: 600px;
-        z-index: 100;
-        background: rgba(255, 102, 179, 0.2) !important;
-        backdrop-filter: blur(10px);
-        border-radius: 25px !important;
-    }
-    /* Ajuste para mobile */
-    @media (max-width: 768px) {
-        [data-testid="stChatInput"] {
-            width: 95%;
-            bottom: 10px;
-        }
-        [data-testid="stVerticalBlock"] {
-            padding-bottom: 80px !important;
-        }
-        h1 { font-size: 1.5rem !important; }
-        h2 { font-size: 1.3rem !important; }
-        h3 { font-size: 1.1rem !important; }
-        .stApp { padding: 5px !important; }
-        .gallery-item { width: 100% !important; }
-        .package-container { grid-template-columns: 1fr !important; }
-    }
-    @media (max-width: 400px) {
-        .stButton > button { font-size: 0.8rem !important; }
-    }
 </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
@@ -668,16 +636,12 @@ class UiService:
                         use_container_width=True,
                         type="primary"):
                 st.session_state.age_verified = True
-                st.session_state.current_page = "home"
                 save_persistent_data()
                 st.rerun()
         st.markdown('</div>', unsafe_allow_html=True)
 
     @staticmethod
     def setup_sidebar():
-        if st.session_state.current_page == "chat":
-            return
-            
         with st.sidebar:
             st.markdown("""
             <style>
@@ -731,6 +695,7 @@ class UiService:
             menu_options = {
                 "💋Início": "home",
                 "🔥Galeria Privada": "gallery",
+                "💌Mensagens": "messages",
                 "🎁Ofertas Especiais": "offers"
             }
             
@@ -834,7 +799,7 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
-        cols = st.columns(3)  # Alterado de 4 para 3 colunas
+        cols = st.columns(4)
         with cols[0]:
             if st.button("🏠Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
@@ -854,6 +819,13 @@ class UiService:
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
+                save_persistent_data()
+                st.rerun()
+        with cols[3]:
+            if st.button("💬Chat", key="shortcut_chat",
+                       help="Voltar ao chat",
+                       use_container_width=True):
+                st.session_state.current_page = "chat"
                 save_persistent_data()
                 st.rerun()
 
@@ -1650,17 +1622,34 @@ def main():
         UiService.age_verification()
         st.stop()
     
-    if not st.session_state.connection_complete:
-        if st.session_state.current_page == "home":
-            UiService.show_call_effect()
-            st.session_state.connection_complete = True
-            st.session_state.current_page = "chat"
-            save_persistent_data()
-            st.rerun()
+    UiService.setup_sidebar()
     
-    # Mostrar sidebar apenas se não for a tela de chat inicial
-    if st.session_state.get("connection_complete", False):
-        UiService.setup_sidebar()
+    if not st.session_state.connection_complete:
+        UiService.show_call_effect()
+        st.session_state.connection_complete = True
+        save_persistent_data()
+        st.rerun()
+    
+    if not st.session_state.chat_started:
+        col1, col2, col3 = st.columns([1,3,1])
+        with col2:
+            st.markdown("""
+            <div style="text-align: center; margin: 50px 0;">
+                <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
+                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
+                <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
+            </div>
+            """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
+            
+            if st.button("💬 Iniciar Conversa", type="primary", use_container_width=True):
+                st.session_state.update({
+                    'chat_started': True,
+                    'current_page': 'chat',
+                    'audio_sent': False
+                })
+                save_persistent_data()
+                st.rerun()
+        st.stop()
     
     if st.session_state.current_page == "home":
         NewPages.show_home_page()
