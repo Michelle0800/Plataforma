@@ -21,11 +21,13 @@ st.set_page_config(
     page_title="Michelle Souza",
     page_icon="💋",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"  # Alterado para collapsed
 )
 
-st._config.set_option('client.caching', True)
-st._config.set_option('client.showErrorDetails', False)
+# Meta tag para viewport mobile
+st.markdown("""
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+""", unsafe_allow_html=True)
 
 hide_streamlit_style = """
 <style>
@@ -66,9 +68,54 @@ hide_streamlit_style = """
         margin: 0 !important;
         padding: 0 !important;
     }
+    
+    /* Ajustes para mobile */
+    @media screen and (max-width: 768px) {
+        [data-testid="stVerticalBlock"] {
+            gap: 0.2rem !important;
+        }
+        .stChatInput {
+            bottom: 0;
+            position: fixed;
+            width: calc(100% - 2rem) !important;
+            left: 0;
+            padding: 0 1rem;
+            background: rgba(0,0,0,0.8) !important;
+            z-index: 999;
+        }
+        .stChatMessage {
+            max-width: 80% !important;
+        }
+        /* Esconder sidebar em mobile */
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+        /* Botão para mostrar sidebar */
+        .sidebar-toggle {
+            position: fixed;
+            bottom: 60px;
+            right: 10px;
+            z-index: 1000;
+            background: #ff66b3;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .chat-container {
+            padding-bottom: 80px;
+        }
+        .call-effect {
+            max-width: 100% !important;
+            margin: 20px 0 !important;
+            padding: 20px !important;
+        }
+    }
 </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+""", unsafe_allow_html=True)
 
 # ======================
 # CONSTANTES E CONFIGURAÇÕES
@@ -452,7 +499,7 @@ class UiService:
 
         call_container = st.empty()
         call_container.markdown(f"""
-        <div style="
+        <div class="call-effect" style="
             background: linear-gradient(135deg, #1e0033, #3c0066);
             border-radius: 20px;
             padding: 30px;
@@ -482,7 +529,7 @@ class UiService:
         
         time.sleep(LIGANDO_DELAY)
         call_container.markdown(f"""
-        <div style="
+        <div class="call-effect" style="
             background: linear-gradient(135deg, #1e0033, #3c0066);
             border-radius: 20px;
             padding: 30px;
@@ -854,6 +901,7 @@ class UiService:
     @staticmethod
     def enhanced_chat_ui(conn):
         st.markdown("""
+        <div class="chat-container">
         <style>
             .chat-header {
                 background: linear-gradient(90deg, #ff66b3, #ff1493);
@@ -913,6 +961,7 @@ class UiService:
             <p>Conversa privada • Suas mensagens são confidenciais</p>
         </div>
         """, unsafe_allow_html=True)
+        st.markdown("</div>", unsafe_allow_html=True)  # Fechar container
 
 # ======================
 # PÁGINAS
@@ -963,6 +1012,14 @@ class NewPages:
             .vip-btn:hover {
                 transform: scale(1.05);
                 box-shadow: 0 5px 15px rgba(255,102,179,0.4);
+            }
+            @media (max-width: 768px) {
+                .hero-banner {
+                    padding: 40px 15px;
+                }
+                .intro-text {
+                    font-size: 1.2em;
+                }
             }
         </style>
         """, unsafe_allow_html=True)
@@ -1112,6 +1169,14 @@ class NewPages:
                 padding: 5px 10px;
                 border-radius: 5px;
                 font-weight: bold;
+            }
+            @media (max-width: 768px) {
+                .package-container {
+                    grid-template-columns: 1fr;
+                }
+                .package-box {
+                    min-height: auto;
+                }
             }
         </style>
         """, unsafe_allow_html=True)
@@ -1622,34 +1687,34 @@ def main():
         UiService.age_verification()
         st.stop()
     
-    UiService.setup_sidebar()
-    
+    # Mostrar tela de chamada direto após verificação
     if not st.session_state.connection_complete:
         UiService.show_call_effect()
         st.session_state.connection_complete = True
+        st.session_state.chat_started = True
+        st.session_state.current_page = "chat"
         save_persistent_data()
         st.rerun()
     
-    if not st.session_state.chat_started:
-        col1, col2, col3 = st.columns([1,3,1])
-        with col2:
-            st.markdown("""
-            <div style="text-align: center; margin: 50px 0;">
-                <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
-                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
-                <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
-            </div>
-            """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
-            
-            if st.button("💬 Iniciar Conversa", type="primary", use_container_width=True):
-                st.session_state.update({
-                    'chat_started': True,
-                    'current_page': 'chat',
-                    'audio_sent': False
-                })
-                save_persistent_data()
-                st.rerun()
-        st.stop()
+    # Mostrar sidebar após a chamada
+    UiService.setup_sidebar()
+    
+    # Adicionar botão de toggle para mobile
+    st.markdown("""
+    <div class="sidebar-toggle">
+        <button onclick="toggleSidebar()">☰ Menu</button>
+    </div>
+    <script>
+        function toggleSidebar() {
+            const sidebar = parent.document.querySelector('section[data-testid="stSidebar"]');
+            if (sidebar.style.display === 'none') {
+                sidebar.style.display = 'block';
+            } else {
+                sidebar.style.display = 'none';
+            }
+        }
+    </script>
+    """, unsafe_allow_html=True)
     
     if st.session_state.current_page == "home":
         NewPages.show_home_page()
