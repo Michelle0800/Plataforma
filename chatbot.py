@@ -21,7 +21,7 @@ st.set_page_config(
     page_title="Michelle Souza",
     page_icon="💋",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"  # Alterado para collapsed
 )
 
 st._config.set_option('client.caching', True)
@@ -65,6 +65,13 @@ hide_streamlit_style = """
     .stApp {
         margin: 0 !important;
         padding: 0 !important;
+    }
+    /* Adicionado para controle do sidebar */
+    [data-testid="stSidebar"] {
+        display: none;
+    }
+    .stApp [data-testid="collapsedControl"] {
+        display: block;
     }
 </style>
 """
@@ -447,6 +454,16 @@ class UiService:
 
     @staticmethod
     def show_call_effect():
+        # Oculta TUDO (sidebar + ícone) durante a animação
+        st.markdown("""
+        <style>
+            [data-testid="stSidebar"],
+            [data-testid="collapsedControl"] {
+                display: none !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
         LIGANDO_DELAY = 5
         ATENDIDA_DELAY = 3
 
@@ -501,6 +518,15 @@ class UiService:
         
         time.sleep(ATENDIDA_DELAY)
         call_container.empty()
+        
+        # Ao final da animação, MOSTRA APENAS o ícone de hambúrguer
+        st.markdown("""
+        <style>
+            [data-testid="collapsedControl"] {
+                display: block !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
 
     @staticmethod
     def show_status_effect(container, status_type):
@@ -800,30 +826,23 @@ class UiService:
 
     @staticmethod
     def chat_shortcuts():
-        cols = st.columns(4)  # Agora com 4 colunas para incluir o Perfil
+        cols = st.columns(3)  # Alterado de 4 para 3 colunas
         with cols[0]:
-            if st.button("👤 Perfil", key="shortcut_profile",
-                       help="Ver perfil da Michelle",
-                       use_container_width=True):
-                st.session_state.current_page = "profile"
-                save_persistent_data()
-                st.rerun()
-        with cols[1]:
-            if st.button("🏠 Início", key="shortcut_home",
+            if st.button("🏠Início", key="shortcut_home", 
                        help="Voltar para a página inicial",
                        use_container_width=True):
                 st.session_state.current_page = "home"
                 save_persistent_data()
                 st.rerun()
-        with cols[2]:
-            if st.button("📸 Galeria", key="shortcut_gallery",
+        with cols[1]:
+            if st.button("📸Galeria", key="shortcut_gallery",
                        help="Acessar galeria privada",
                        use_container_width=True):
                 st.session_state.current_page = "gallery"
                 save_persistent_data()
                 st.rerun()
-        with cols[3]:
-            if st.button("🎁 Ofertas", key="shortcut_offers",
+        with cols[2]:
+            if st.button("🎁Ofertas", key="shortcut_offers",
                        help="Ver ofertas especiais",
                        use_container_width=True):
                 st.session_state.current_page = "offers"
@@ -983,7 +1002,6 @@ class NewPages:
                         use_container_width=True,
                         type="primary"):
                 st.session_state.current_page = "offers"
-                save_persistent_data()
                 st.rerun()
 
         st.markdown("""
@@ -1316,65 +1334,6 @@ class NewPages:
             save_persistent_data()
             st.rerun()
 
-    @staticmethod
-    def show_profile_page():
-        st.markdown("""
-        <style>
-            .profile-container {
-                max-width: 500px;
-                margin: 0 auto;
-                text-align: center;
-                padding: 20px;
-            }
-            .profile-image {
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                object-fit: cover;
-                border: 5px solid #ff66b3;
-                margin: 0 auto 20px;
-                box-shadow: 0 5px 15px rgba(255,102,179,0.3);
-            }
-            .profile-name {
-                color: #ff66b3;
-                font-size: 2rem;
-                margin-bottom: 10px;
-            }
-            .profile-bio {
-                color: #aaa;
-                margin-bottom: 30px;
-                font-size: 1.1rem;
-            }
-            .back-button {
-                background: linear-gradient(45deg, #ff1493, #9400d3);
-                color: white;
-                border: none;
-                padding: 12px 30px;
-                border-radius: 30px;
-                font-size: 1rem;
-                cursor: pointer;
-                transition: all 0.3s;
-                margin-top: 20px;
-            }
-            .back-button:hover {
-                transform: scale(1.05);
-                box-shadow: 0 5px 15px rgba(255,20,147,0.4);
-            }
-        </style>
-        """, unsafe_allow_html=True)
-
-        st.markdown("""
-        <div class="profile-container">
-            <img src="{profile_img}" class="profile-image" alt="Michelle Souza">
-            <h1 class="profile-name">Michelle Souza</h1>
-            <p class="profile-bio">Safada e pronta para te satisfazer</p>
-            
-            <button class="back-button" onclick="window.location.href='?page=chat'">
-                Voltar ao Chat
-            </button>
-        </div>
-        """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
-
 # ======================
 # SERVIÇOS DE CHAT
 # ======================
@@ -1682,19 +1641,46 @@ def main():
         UiService.age_verification()
         st.stop()
     
-    UiService.setup_sidebar()
-    
     if not st.session_state.connection_complete:
         UiService.show_call_effect()
         st.session_state.connection_complete = True
-        st.session_state.chat_started = True  # Inicia direto o chat após a chamada
-        st.session_state.current_page = "chat"  # Vai direto para o chat
         save_persistent_data()
         st.rerun()
     
-    if st.session_state.current_page == "profile":
-        NewPages.show_profile_page()
-    elif st.session_state.current_page == "home":
+    # Configuração do sidebar (agora só aparece quando explicitamente aberto)
+    UiService.setup_sidebar()
+    
+    if not st.session_state.chat_started:
+        # Garante que o sidebar fique oculto (mas o ícone de hambúrguer visível)
+        st.markdown("""
+        <style>
+            [data-testid="stSidebar"] {
+                display: none !important;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        col1, col2, col3 = st.columns([1,3,1])
+        with col2:
+            st.markdown("""
+            <div style="text-align: center; margin: 50px 0;">
+                <img src="{profile_img}" width="120" style="border-radius: 50%; border: 3px solid #ff66b3;">
+                <h2 style="color: #ff66b3; margin-top: 15px;">Michelle</h2>
+                <p style="font-size: 1.1em;">Estou pronta para você, amor...</p>
+            </div>
+            """.format(profile_img=Config.IMG_PROFILE), unsafe_allow_html=True)
+            
+            if st.button("💬 Iniciar Conversa", type="primary", use_container_width=True):
+                st.session_state.update({
+                    'chat_started': True,
+                    'current_page': 'chat',
+                    'audio_sent': False
+                })
+                save_persistent_data()
+                st.rerun()
+        st.stop()
+    
+    if st.session_state.current_page == "home":
         NewPages.show_home_page()
     elif st.session_state.current_page == "gallery":
         UiService.show_gallery_page(conn)
