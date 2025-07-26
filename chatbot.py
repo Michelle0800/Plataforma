@@ -21,7 +21,7 @@ st.set_page_config(
     page_title="Michelle Souza",
     page_icon="💋",
     layout="wide",
-    initial_sidebar_state="collapsed"  # Alterado para collapsed
+    initial_sidebar_state="collapsed"
 )
 
 # Meta tag para viewport mobile
@@ -115,7 +115,9 @@ hide_streamlit_style = """
         }
     }
 </style>
-""", unsafe_allow_html=True)
+"""
+
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 # ======================
 # CONSTANTES E CONFIGURAÇÕES
